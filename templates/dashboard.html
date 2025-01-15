@@ -4,6 +4,6 @@
 <div class = "container">
     <h1> Welcome, {{username}}!</h1>
     <p>Welcome to your Dashboard</p>
-    <a href = "" class = "btn btn-logout"/>
+    <a href = "{{url_for('logout')}}" class = "btn btn-logout">Logout</a>
 </div>
 {% endblock %}

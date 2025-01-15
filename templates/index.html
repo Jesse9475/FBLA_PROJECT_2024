@@ -9,14 +9,6 @@
 <h1>ICS Job Search</h1>
 <br> 
 <main role="main">
-    <div class="jumbotron">
-      <div class="col-sm-8 mx-auto">
-        <h1>Welcome</h1>
-        <p>This is a blah blah blah blah (put some yap here)</p>
-          <a class="btn btn-primary" href="/login" role="button">Log in&raquo;</a>
-        </p>
-      </div>
-    </div>
     <section class="vh-100">
       <div class="container-fluid h-custom">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -26,9 +18,9 @@
           </div>
           <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
             <h1 style="text-align: center;"> Log in </h1>
-            <form action = "">
+            <form id = "auth-form" action = "{{url_for('login')}}" method = "post">
     
-              <!-- Email input -->
+              <!-- User Name input -->
               <div data-mdb-input-init class="form-outline mb-4">
                 <label class="form-label" for="form3Example3">Username:</label>
                 <input type="text" name="username" class="form-control form-control-lg"
@@ -56,9 +48,9 @@
     
               <div class="text-center text-lg-start mt-4 pt-2">
                 <input type = "submit" value = "Login" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg"
-                style="padding-left: 2.5rem; padding-right: 2.5rem;"/>
-                <p class="small fw-bold mt-2 pt-1 mb-0">Don't have an account? <a href="#!" class="link-danger">Register</a>
-                </p>
+                style="padding-left: 2.5rem; padding-right: 2.5rem;" class = "btn btn-login" onclick = "setActionForm('login')"/>
+                <input type = "button" value = "Register" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg"
+                style="padding-left: 2.5rem; padding-right: 2.5rem;" class = "btn btn-login" onclick = "setActionForm('register')"/>              
               </div>
     
             </form>
@@ -69,4 +61,28 @@
       </div>
     </section>
   </main>
+
+  <script>
+
+    function setActionForm(action) {
+
+      let form = document.getElementById("auth-form");
+      if (action === 'login') {
+
+        form.action = "{{url_for('login')}}"
+        form.method = "POST"
+        form.submit();
+
+      } else if(action === 'register') {
+        
+        form.action = "{{url_for('register')}}"
+        form.method = "POST"
+        form.submit();
+
+      }
+
+    }
+
+  </script>
+
 {% endblock %}
