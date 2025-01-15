@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -23,6 +23,8 @@ class User(db.Model):
     __bind_key__ = 'users'
     id = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String(25), unique = True, nullable = False)
+    is_admin = db.Column(db.Boolean, default = False)
+
     password_hash = db.Column(db.String(150), nullable = False)
 
     def set_password(self, password):
@@ -107,7 +109,8 @@ def register():
     if user:
         return render_template("index.html", error = "User already here!")
     else:
-        new_user = User(username = username)
+        is_admin = User.query.count() == 0
+        new_user = User(username = username, is_admin = is_admin)
         new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
@@ -124,6 +127,19 @@ def dashboard():
 def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
+
+@app.route('/admin')
+def admin(): 
+    if "username" in session:
+        user = User.query.filter_by(username = session['username']).first()
+        if user and user.is_admin:
+            return render_template("admin.html", username = user.username)
+        else:
+            flash("You must be admin to access this page.")
+            return redirect(url_for('dashboard'))
+    else:
+        flash("You must be logged in to access this page.")
+        return redirect(url_for('index'))
 
 if __name__ == "__main__":
     with app.app_context():
