@@ -44,6 +44,18 @@ class BlogPost(db.Model):
     def __repr__(self):
         return 'Blog post ' + str(self.id) 
 
+class JobApplication(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    applicant_name = db.Column(db.String(100), nullable=False)
+    position = db.Column(db.String(100), nullable=False)
+    cover_letter = db.Column(db.String(10000), nullable=False)
+    date_applied = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    approved = db.Column(db.Boolean, nullable=False, default=False)
+    denied = db.Column(db.Boolean, nullable=False, default=False)
+
+    def __repr__(self):
+        return f'JobApplication({self.applicant_name}, {self.position}, {self.cover_letter})'
+    
 all_posts = []
 
 @app.route('/')
@@ -88,6 +100,27 @@ def edit(id):
     else:
         return render_template('edit.html', post = post)
 
+@app.route('/apply', methods=['GET', 'POST'])
+def apply():
+    if request.method == 'POST':
+        # Process form data
+        applicant_name = request.form['applicant_name']
+        position = request.form['position']
+        cover_letter = request.form.get('cover_letter', '')  # Optional field
+
+        new_application = JobApplication(
+            applicant_name=applicant_name,
+            position=position,
+            cover_letter=cover_letter
+        )
+        db.session.add(new_application)
+        db.session.commit()
+
+        flash('Your application has been submitted successfully!', 'success')
+        return redirect('/apply')  # Redirect back to the apply page or a confirmation page
+
+    return render_template('apply.html')  # Render the application form page on GET request
+
 #Login
 @app.route("/login", methods = ['POST'])
 def login():
@@ -120,7 +153,9 @@ def register():
 @app.route("/dashboard")
 def dashboard():
     if "username" in session:
-        return render_template("dashboard.html", username = session['username'])
+        # Fetch the user based on the session username
+        user = User.query.filter_by(username=session['username']).first()
+        return render_template("dashboard.html", username=session['username'], user=user)  # Pass the 'user' object
     return redirect(url_for('index'))
 
 @app.route("/logout")
@@ -140,6 +175,39 @@ def admin():
     else:
         flash("You must be logged in to access this page.")
         return redirect(url_for('index'))
+    
+ #Applications Route   
+@app.route('/admin/applications')
+def admin_applications():
+    if "username" in session:
+        user = User.query.filter_by(username=session['username']).first()
+        if user and user.is_admin:
+            # Only show unapproved applications
+            unapproved_applications = JobApplication.query.filter_by(approved=False, denied=False).all()
+            return render_template('admin_applications.html', applications=unapproved_applications)
+        else:
+            flash("You must be admin to access this page.")
+            return redirect(url_for('dashboard'))
+    else:
+        flash("You must be logged in to access this page.")
+        return redirect(url_for('index'))
+
+#Approve Route
+@app.route('/admin/applications/approve/<int:id>')
+def approve_application(id):
+    application = JobApplication.query.get_or_404(id)
+    application.approved = True
+    db.session.commit()
+    return redirect('/admin/applications')
+
+#Deny Route
+@app.route('/admin/applications/deny/<int:id>')
+def deny_application(id):
+    application = JobApplication.query.get_or_404(id)
+    application.denied = True
+    db.session.commit()
+    return redirect('/admin/applications')
+
 
 if __name__ == "__main__":
     with app.app_context():

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+    <h2>Unapproved Job Applications</h2>
+    
+    <!-- Check if there are applications -->
+    {% if applications %}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Applicant Name</th>
+                <th>Position</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for application in applications %}
+            <tr>
+                <td>{{ application.applicant_name }}</td>
+                <td>{{ application.position }}</td>
+                <td>
+                    <a href="{{ url_for('approve_application', id=application.id) }}" class="btn btn-success">Approve</a>
+                    <a href="{{ url_for('deny_application', id=application.id) }}" class="btn btn-danger">Deny</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No unapproved applications at the moment.</p>
+    {% endif %}
+</div>
+{% endblock %}

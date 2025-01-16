@@ -1,9 +1,16 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<div class = "container">
-    <h1> Welcome, {{username}}!</h1>
+<div class="container">
+    <h1>Welcome, {{ username }}!</h1>
     <p>Welcome to your Dashboard</p>
-    <a href = "{{url_for('logout')}}" class = "btn btn-logout">Logout</a>
-</div>
+    
+    <!-- Show link only if the user is an admin -->
+    {% if user.is_admin %}
+        <a href="{{ url_for('admin_applications') }}" class="btn btn-primary">Manage Job Applications</a>
+    {% endif %}
+    <a href="{{ url_for('apply') }}" class="btn btn-success">Apply for Job</a>
+    <a href="{{ url_for('logout') }}" class="btn btn-danger">Logout</a>
+
 {% endblock %}
+

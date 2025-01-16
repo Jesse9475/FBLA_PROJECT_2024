@@ -6,25 +6,24 @@
 
 {% block body %}
 <br>
-<h1>All Posts</h1> 
+<h1>All Job Applications</h1> 
 
     <hr>
-    <h2>Create New Blog Post:</h2>
+    <h2>Create New Job:</h2>
     <form action = '/posts' method = 'POST'>
-        <label for = "title">Title:</label>
-        <input class="form-control" type="text" name = 'title' id = 'title' placeholder="Enter TItle" aria-label="Enter TItle">
+        <label for = "title">Job Title:</label>
+        <input class="form-control" type="text" name = 'title' id = 'title' placeholder="Enter Job Title" aria-label="Enter Job Title">
         <br>
-        <label for="author">Author:</label>
-        <input class="form-control" type="text" name = 'author' id = 'author' placeholder="Enter Author" aria-label="Enter Author">
+        <label for="author">Company Name:</label>
+        <input class="form-control" type="text" name = 'author' id = 'author' placeholder="Company Name" aria-label="Company Name">
         <br>
-        <label for="content">Post:</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" id = 'content' placeholder = "Enter Post" aria-label = "Enter Post" name = 'content'></textarea>
+        <label for="content">Job Description:</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" id = 'content' placeholder = "Job Description" aria-label = "Job Description" name = 'content'></textarea>
         <br>
         <input type = 'submit' value = 'Post'>
     </form>
-    <hr>
 
-    {% for post in posts %}
+    <!-- {% for post in posts %}
         <br>
         <h2>{{post.title}}</h2>
 
@@ -39,6 +38,6 @@
         <a class = "btn btn-danger"  href = '/posts/delete/{{post.id}}'>Delete</a>
         <a class = "btn btn-primary" href = '/posts/edit/{{post.id}}'>Edit</a>
         <hr>    
-    {% endfor %}
+    {% endfor %} -->
 
 {% endblock %}

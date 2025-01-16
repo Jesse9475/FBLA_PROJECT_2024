@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block head %} 
+<title>Apply for Job</title>
+{% endblock %}
+
+{% block body %}
+<br>
+<h1>All Job Applications</h1>
+
+    <hr>
+    <h2>Submit a Job Application:</h2>
+    <form action='/apply' method='POST'>
+        <label for="job_title">Your Name:</label>
+        <input class="form-control" type="text" name="applicant_name" id="applicant_name" placeholder="Enter Your Name" required>
+        <br>
+
+        <label for="applicant_name">Position:</label>
+        <input class="form-control" type="text" name="position" id="position" placeholder="Enter Your Name" required>
+        <br>
+
+        <label for="application_content">Cover Leter:</label>
+        <textarea class="form-control" id="cover_letter" rows="3" name="cover_letter" placeholder="Enter Your Cover Letter" optional></textarea>
+        <br>
+
+        <input type="submit" class="btn btn-success" value="Submit Application">
+    </form>
+    <hr>
+
+    <h2>Pending Applications:</h2>
+
+    {% for application in applications %}
+        <div class="application">
+            <h3>{{ application.job_title }}</h3>
+            <small>Submitted by: {{ application.applicant_name }} on {{ application.date_submitted }}</small>
+            <p>{{ application.application_content }}</p>
+            <br>
+            <a class="btn btn-success" href="/apply/approve/{{ application.id }}">Approve</a>
+            <a class="btn btn-danger" href="/apply/deny/{{ application.id }}">Deny</a>
+            <hr>
+        </div>
+    {% else %}
+        <p>No applications pending at the moment.</p>
+    {% endfor %}
+{% endblock %}
+ 
