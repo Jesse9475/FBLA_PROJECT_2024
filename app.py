@@ -12,7 +12,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
 
 app.config['SQLALCHEMY_BINDS'] = {
 
-    'users': 'sqlite:///users.db'
+    'users': 'sqlite:///users.db',
+    'applications': 'sqlite:///applications.db'
 
 }
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
