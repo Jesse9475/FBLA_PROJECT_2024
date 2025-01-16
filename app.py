@@ -40,12 +40,13 @@ class BlogPost(db.Model):
     title = db.Column(db.String(100), nullable=False)
     content = db.Column(db.Text, nullable=False)
     author = db.Column(db.String(20), nullable=False, default='N/A')
-    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow().date())
 
     # Additional fields to store job application data
     applicant_name = db.Column(db.String(100), nullable=True)
     position = db.Column(db.String(100), nullable=True)
     cover_letter = db.Column(db.Text, nullable=True)
+
 
     def __repr__(self):
         return f'Blog post {self.id}'
@@ -56,10 +57,10 @@ class JobApplication(db.Model):
     applicant_name = db.Column(db.String(100), nullable=False)
     position = db.Column(db.String(100), nullable=False)
     cover_letter = db.Column(db.String(10000), nullable=False)
-    date_applied = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    date_applied = db.Column(db.DateTime, nullable=False, default=datetime.utcnow().date())
     approved = db.Column(db.Boolean, nullable=False, default=False)
     denied = db.Column(db.Boolean, nullable=False, default=False)
-
+    username_author = db.Column(db.String(100), nullable=False)
     def __repr__(self):
         return f'JobApplication({self.applicant_name}, {self.position}, {self.cover_letter})'
     
@@ -75,9 +76,9 @@ def index():
 def posts():
 
     if request.method == 'POST':
-        post_title = request.form['title']
-        post_content = request.form['content']
-        post_author = request.form['author']
+        post_title = request.form['applicant_name']
+        post_content = request.form['cover_letter']
+        post_author = request.form['position']
         new_post = BlogPost(title=post_title, content = post_content, author = post_author)
         db.session.add(new_post)
         db.session.commit()
@@ -87,35 +88,41 @@ def posts():
 
     return render_template('posts.html', posts = all_posts)
 
-@app.route('/posts/delete/<int:id>')
-def delete(id):
-    post = BlogPost.query.get_or_404(id)
-    db.session.delete(post)
-    db.session.commit()
-    return redirect('/posts')
+# @app.route('/posts/delete/<int:id>')
+# def delete(id):
+#     post = BlogPost.query.get_or_404(id)
+#     db.session.delete(post)
+#     db.session.commit()
+#     return redirect('/posts')
 
-@app.route('/posts/edit/<int:id>', methods = ['POST'])
-def edit(id):
+# @app.route('/posts/edit/<int:id>', methods = ['POST'])
+# def edit(id):
     
-    post = BlogPost.query.get_or_404(id)
-    if request.method == 'POST':
-        post.title = request.form['title']
-        post.content = request.form['content']
-        post.author = request.form['author']
-        db.session.commit()
-        return redirect('/posts')
-    else:
-        return render_template('edit.html', post = post)
+#     post = BlogPost.query.get_or_404(id)
+#     if request.method == 'POST':
+#         post.title = request.form['title']
+#         post.content = request.form['content']
+#         post.author = request.form['author']
+#         db.session.commit()
+#         return redirect('/posts')
+#     else:
+#         return render_template('edit.html', post = post)
 
-@app.route('/apply', methods=['GET', 'POST'])
+@app.route('/create_job_posting', methods=['GET', 'POST'])
 def apply():
+    if "username" not in session:
+        flash("You must be logged in to apply!", "warning")
+        return redirect('/')
+
     if request.method == 'POST':
         # Process form data
+        username_author = session['username']
         applicant_name = request.form['applicant_name']
         position = request.form['position']
         cover_letter = request.form.get('cover_letter', '')  # Optional field
 
         new_application = JobApplication(
+            username_author = username_author,
             applicant_name=applicant_name,
             position=position,
             cover_letter=cover_letter
@@ -124,9 +131,9 @@ def apply():
         db.session.commit()
 
         flash('Your application has been submitted successfully!', 'success')
-        return redirect('/apply')  # Redirect back to the apply page or a confirmation page
+        return redirect('/create_job_posting')  # Redirect back to the apply page or a confirmation page
 
-    return render_template('apply.html')  # Render the application form page on GET request
+    return render_template('create_job_posting.html')  # Render the application form page on GET request
 
 #Login
 @app.route("/login", methods = ['POST'])
@@ -210,9 +217,9 @@ def approve_application(id):
 
     # Create a new BlogPost entry based on the approved application
     new_post = BlogPost(
-        title=f"Job Application Approved: {application.position}",
-        content=f"Application by {application.applicant_name} has been approved.\n\nCover Letter:\n{application.cover_letter}",
-        author="Admin",  # Assuming admin is the author
+        title=application.applicant_name,
+        content=application.cover_letter,
+        author= application.username_author,
         applicant_name=application.applicant_name,
         position=application.position,
         cover_letter=application.cover_letter
@@ -221,7 +228,6 @@ def approve_application(id):
     db.session.commit()
 
     return redirect('/admin/applications')
-
 
 #Deny Route
 @app.route('/admin/applications/deny/<int:id>')
