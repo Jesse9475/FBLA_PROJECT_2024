@@ -46,6 +46,7 @@ class BlogPost(db.Model):
         return 'Blog post ' + str(self.id) 
 
 class JobApplication(db.Model):
+    __bind_key__ = 'applications'
     id = db.Column(db.Integer, primary_key=True)
     applicant_name = db.Column(db.String(100), nullable=False)
     position = db.Column(db.String(100), nullable=False)
