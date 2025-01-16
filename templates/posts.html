@@ -23,7 +23,7 @@
         <input type = 'submit' value = 'Post'>
     </form>
 
-    <!-- {% for post in posts %}
+    {% for post in posts %}
         <br>
         <h2>{{post.title}}</h2>
 
@@ -38,6 +38,6 @@
         <a class = "btn btn-danger"  href = '/posts/delete/{{post.id}}'>Delete</a>
         <a class = "btn btn-primary" href = '/posts/edit/{{post.id}}'>Edit</a>
         <hr>    
-    {% endfor %} -->
+    {% endfor %}
 
 {% endblock %}

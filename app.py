@@ -34,16 +34,21 @@ class User(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-#Blog model
+# Updated BlogPost model
 class BlogPost(db.Model):
-    id = db.Column(db.Integer, primary_key = True)
-    title = db.Column(db.String(100), nullable = False)
-    content = db.Column(db.Text, nullable = False)
-    author = db.Column(db.String(20), nullable = False, default = 'N/A')
-    date_posted = db.Column(db.DateTime, nullable = False, default = datetime.utcnow)
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    content = db.Column(db.Text, nullable=False)
+    author = db.Column(db.String(20), nullable=False, default='N/A')
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    # Additional fields to store job application data
+    applicant_name = db.Column(db.String(100), nullable=True)
+    position = db.Column(db.String(100), nullable=True)
+    cover_letter = db.Column(db.Text, nullable=True)
 
     def __repr__(self):
-        return 'Blog post ' + str(self.id) 
+        return f'Blog post {self.id}'
 
 class JobApplication(db.Model):
     __bind_key__ = 'applications'
@@ -198,9 +203,25 @@ def admin_applications():
 @app.route('/admin/applications/approve/<int:id>')
 def approve_application(id):
     application = JobApplication.query.get_or_404(id)
+
+    # Mark the application as approved
     application.approved = True
     db.session.commit()
+
+    # Create a new BlogPost entry based on the approved application
+    new_post = BlogPost(
+        title=f"Job Application Approved: {application.position}",
+        content=f"Application by {application.applicant_name} has been approved.\n\nCover Letter:\n{application.cover_letter}",
+        author="Admin",  # Assuming admin is the author
+        applicant_name=application.applicant_name,
+        position=application.position,
+        cover_letter=application.cover_letter
+    )
+    db.session.add(new_post)
+    db.session.commit()
+
     return redirect('/admin/applications')
+
 
 #Deny Route
 @app.route('/admin/applications/deny/<int:id>')
