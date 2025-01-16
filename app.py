@@ -146,6 +146,7 @@ def login():
         session['username'] = username
         return redirect(url_for('dashboard'))
     else:
+        flash("Invalid username or password.")
         return render_template('index.html', error = 'Invalid username or password.')
 
 @app.route("/register", methods = ['POST'])
