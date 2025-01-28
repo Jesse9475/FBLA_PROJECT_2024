@@ -7,11 +7,25 @@
 {% block body %}
 <br>
 <h1>Apply for a Job!</h1> 
+
+    <form method="get" action="/posts">
+        <div>
+            <label for="salary_min">Minimum Salary:</label>
+            <input type="number" id="salary_min" name="salary_min" step="1000" min="0">
+        </div>
+        <div>
+            <label for="salary_max">Maximum Salary:</label>
+            <input type="number" id="salary_max" name="salary_max" step="1000" min="0">
+        </div>
+        <button type="submit">Filter</button>
+    </form>
+
     {% for post in posts %}
         <br>
         <h2>{{post.title}}</h2>
         <b><small> Written by {{post.author}} on {{post.date_posted}} </small></b>
         <li>{{post.content}}</li>
+        <li>{{post.salary}}</li>
         <hr>   
         
     {% endfor %}

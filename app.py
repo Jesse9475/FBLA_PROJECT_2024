@@ -46,6 +46,7 @@ class BlogPost(db.Model):
     applicant_name = db.Column(db.String(100), nullable=True)
     position = db.Column(db.String(100), nullable=True)
     cover_letter = db.Column(db.Text, nullable=True)
+    salary = db.Column(db.Float, nullable = True)
 
 
     def __repr__(self):
@@ -61,10 +62,10 @@ class JobApplication(db.Model):
     approved = db.Column(db.Boolean, nullable=False, default=False)
     denied = db.Column(db.Boolean, nullable=False, default=False)
     username_author = db.Column(db.String(100), nullable=False)
+    salary = db.Column(db.Float, nullable=True)
     def __repr__(self):
         return f'JobApplication({self.applicant_name}, {self.position}, {self.cover_letter})'
     
-all_posts = []
 
 @app.route('/')
 def index():
@@ -75,16 +76,28 @@ def index():
 @app.route('/posts', methods=['GET', 'POST'])
 def posts():
 
+    salary_min = request.args.get('salary_min', type = float)
+    salary_max = request.args.get('salary_max', type = float)
+
     if request.method == 'POST':
         post_title = request.form['applicant_name']
         post_content = request.form['cover_letter']
         post_author = request.form['position']
-        new_post = BlogPost(title=post_title, content = post_content, author = post_author)
+        post_salary = request.form['salary']
+        new_post = BlogPost(title=post_title, content = post_content, author = post_author, salary = post_salary)
         db.session.add(new_post)
         db.session.commit()
         return redirect('/posts')
     else:
-        all_posts = BlogPost.query.order_by(BlogPost.date_posted).all()
+        query = BlogPost.query
+        
+        if salary_min is not None:
+            query = query.filter(BlogPost.salary >= salary_min)
+        if salary_max is not None:
+            query = query.filter(BlogPost.salary <= salary_max)
+
+        all_posts = query.order_by(BlogPost.date_posted).all()
+        print(all_posts)
 
     return render_template('posts.html', posts = all_posts)
 
@@ -119,17 +132,19 @@ def apply():
         username_author = session['username']
         applicant_name = request.form['applicant_name']
         position = request.form['position']
+        salary = request.form['salary']
         cover_letter = request.form.get('cover_letter', '')  # Optional field
 
         new_application = JobApplication(
             username_author = username_author,
             applicant_name=applicant_name,
             position=position,
-            cover_letter=cover_letter
+            cover_letter=cover_letter,
+            salary=salary
         )
         db.session.add(new_application)
         db.session.commit()
-
+    
         flash('Your application has been submitted successfully!', 'success')
         return redirect('/create_job_posting')  # Redirect back to the apply page or a confirmation page
 
@@ -223,7 +238,8 @@ def approve_application(id):
         author= application.username_author,
         applicant_name=application.applicant_name,
         position=application.position,
-        cover_letter=application.cover_letter
+        cover_letter=application.cover_letter,
+        salary=application.salary
     )
     db.session.add(new_post)
     db.session.commit()
