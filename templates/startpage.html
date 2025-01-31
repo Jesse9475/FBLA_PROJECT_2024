@@ -1,9 +1,0 @@
-{% extends 'base.html' %}
-
-{% block title %}Start Page{% endblock %}
-
-{% block body %}
-<h1>Welcome to My Flask Website!</h1>
-<p>This is the start page.</p>
-<button onclick="window.location.href='{{ url_for('login') }}'">Go to Login</button>
-{% endblock %}

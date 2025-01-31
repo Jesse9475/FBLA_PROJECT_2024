@@ -145,3 +145,30 @@ if __name__ == "__main__":
     with app.app_context():
         db.create_all()
     app.run(debug=True)
+
+    from flask import Flask, render_template, request, redirect, url_for, flash
+
+app = Flask(__name__)
+app.secret_key = "RNX73oMEeL5ShKoaHiiZkw"
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        password = request.form['password']
+        confirm_password = request.form['confirm_password']
+        
+        # Check if passwords match
+        if password != confirm_password:
+            flash('Passwords do not match!', 'danger')
+            return redirect(url_for('register'))
+
+        # Process registration logic (e.g., save to database)
+        # Example:
+        # save_user_to_db(name, email, password)
+
+        flash('Registration successful!', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('register.html')
