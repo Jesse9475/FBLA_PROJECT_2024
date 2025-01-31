@@ -99,7 +99,7 @@ def posts():
         all_posts = query.order_by(BlogPost.date_posted).all()
         print(all_posts)
 
-    return render_template('posts.html', posts = all_posts)
+    return render_template('apply.html', posts = all_posts)
 
 # @app.route('/posts/delete/<int:id>')
 # def delete(id):
@@ -148,44 +148,48 @@ def apply():
         flash('Your application has been submitted successfully!', 'success')
         return redirect('/create_job_posting')  # Redirect back to the apply page or a confirmation page
 
-    return render_template('create_job_posting.html')  # Render the application form page on GET request
+    return render_template('add-listing.html')  # Render the application form page on GET request
 
 #Login
-@app.route("/login", methods = ['POST'])
+@app.route("/login", methods = ['GET', 'POST'])
 def login():
     #Info from form
-    username = request.form['username']
-    password = request.form["password"]
-    user = User.query.filter_by(username=username).first()
-    if user and user.check_password(password):
-        session['username'] = username
-        return redirect(url_for('dashboard'))
-    else:
-        flash("Invalid username or password.")
-        return render_template('index.html', error = 'Invalid username or password.')
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username).first()
+        if user and user.check_password(password):
+            session['username'] = username
+            return redirect(url_for('dashboard'))
+        else:
+            flash("Invalid username or password.")
+            return render_template('login.html', error = 'Invalid username or password.')
+    return render_template('login.html')
 
-@app.route("/register", methods = ['POST'])
+@app.route("/register", methods = ['GET', 'POST'])
 def register():
-    username = request.form['username']
-    password = request.form["password"]
-    user = User.query.filter_by(username=username).first()
-    if user:
-        return render_template("index.html", error = "User already here!")
-    else:
-        is_admin = User.query.count() == 0
-        new_user = User(username = username, is_admin = is_admin)
-        new_user.set_password(password)
-        db.session.add(new_user)
-        db.session.commit()
-        session['username'] = username
-        return redirect(url_for('dashboard'))
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form["password"]
+        user = User.query.filter_by(username=username).first()
+        if user:
+            return render_template("index.html", error = "User already here!")
+        else:
+            is_admin = User.query.count() == 0
+            new_user = User(username = username, is_admin = is_admin)
+            new_user.set_password(password)
+            db.session.add(new_user)
+            db.session.commit()
+            session['username'] = username
+            return redirect(url_for('dashboard'))
+    return render_template('register.html')
 
 @app.route("/dashboard")
 def dashboard():
     if "username" in session:
         # Fetch the user based on the session username
         user = User.query.filter_by(username=session['username']).first()
-        return render_template("dashboard.html", username=session['username'], user=user)  # Pass the 'user' object
+        return render_template("homepage.html", username=session['username'], user=user)  # Pass the 'user' object
     return redirect(url_for('index'))
 
 @app.route("/logout")

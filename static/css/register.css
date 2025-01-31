@@ -1,0 +1,81 @@
+/* Reset body and html margin/padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Set a background image to the body */
+body {
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url('data:image/jpeg;base64,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') no-repeat center center fixed;  /* Add your image path here */
+    background-size: cover;
+}
+
+/* Remove the container background */
+.container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    position: relative;
+    background: white;  /* Ensure no background is applied */
+}
+
+/* Form container styling - Transparent with shadow for the login box */
+.form-container {
+    position: relative;
+    background-color: transparent;  
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px white(0, 0, 0, 0.2);  /* Subtle shadow to the login box */
+}
+
+/* Form Styling */
+.form {
+    display: none;
+}
+
+.form.active {
+    display: block;
+}
+
+.form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Form group styling */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Button styling */
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+/* Hide unnecessary elements */
+.hidden {
+    display: none;
+}

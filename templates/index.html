@@ -7,82 +7,56 @@
 {% block body %}
 <br>
 <h1>ICS Job Search</h1>
-<br> 
+<br>
 <main role="main">
-    <section class="vh-100">
-      <div class="container-fluid h-custom">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-          <div class="col-md-9 col-lg-6 col-xl-5">
-            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid"
-              alt="Sample image">
-          </div>
-          <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-            <h1 style="text-align: center;"> Log in </h1>
-            <form id = "auth-form" action = "{{url_for('login')}}" method = "post">
-    
-              <!-- User Name input -->
-              <div data-mdb-input-init class="form-outline mb-4">
-                <label class="form-label" for="form3Example3">Username:</label>
-                <input type="text" name="username" class="form-control form-control-lg"
-                  placeholder="Please enter a valid username" />
-              </div>
-    
-              <!-- Password input -->
-              <div data-mdb-input-init class="form-outline mb-3">
-                <label class="form-label" for="form3Example4">Password:</label>
-                <input type="password" name="password" class="form-control form-control-lg"
-                  placeholder="Please enter your password" />
-                
-              </div>
-    
-              <div class="d-flex justify-content-between align-items-center">
-                <!-- Checkbox -->
-                <div class="form-check mb-0">
-                  <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3" />
-                  <label class="form-check-label" for="form2Example3">
-                    Remember me
-                  </label>
-                </div>
-                <a href="#!" class="text-body">Forgot password?</a>
-              </div>
-    
-              <div class="text-center text-lg-start mt-4 pt-2">
-                <input type = "submit" value = "Login" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg"
-                style="padding-left: 2.5rem; padding-right: 2.5rem;" class = "btn btn-login" onclick = "setActionForm('login')"/>
-                <input type = "button" value = "Register" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-lg"
-                style="padding-left: 2.5rem; padding-right: 2.5rem;" class = "btn btn-login" onclick = "setActionForm('register')"/>              
-              </div>
-    
-            </form>
-          </div>
+  <section class="vh-100">
+    <div class="container-fluid h-custom">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-md-9 col-lg-6 col-xl-5">
+          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" class="img-fluid"
+            alt="Sample image">
+        </div>
+        <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+          <form id="auth-form" action="{{url_for('login')}}" method="post">
+            <div class="text-center text-lg-start mt-4 pt-2">
+              <!-- Modify Login button to go to the /login route -->
+              <input type="button" value="Login" data-mdb-button-init data-mdb-ripple-init
+                class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;"
+                onclick="setActionForm('login')" />
+
+              <!-- Modify Register button to go to the /register route -->
+              <input type="button" value="Register" data-mdb-button-init data-mdb-ripple-init
+                class="btn btn-primary btn-lg" style="padding-left: 2.5rem; padding-right: 2.5rem;"
+                onclick="setActionForm('register')" />
+
+            </div>
+
+          </form>
         </div>
       </div>
-        <!-- Right -->
-      </div>
-    </section>
-  </main>
+    </div>
+    <!-- Right -->
+    </div>
+  </section>
+</main>
 
-  <script>
+<script>
 
-    function setActionForm(action) {
+  function setActionForm(action) {
 
-      let form = document.getElementById("auth-form");
-      if (action === 'login') {
+    let form = document.getElementById("auth-form");
+    if (action === 'login') {
 
-        form.action = "{{url_for('login')}}"
-        form.method = "POST"
-        form.submit();
+      window.location.href = "/login"
 
-      } else if(action === 'register') {
-        
-        form.action = "{{url_for('register')}}"
-        form.method = "POST"
-        form.submit();
+    } else if (action === 'register') {
 
-      }
+      window.location.href = "/register"
 
     }
 
-  </script>
+  }
+
+</script>
 
 {% endblock %}

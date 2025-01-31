@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Listings</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    /* Top navigation bar */
+    .navbar {
+      background-color: #007BFF;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+    }
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      margin: 0 10px;
+    }
+    .navbar a:hover {
+      text-decoration: underline;
+    }
+
+    /* Layout */
+    .container {
+      display: flex;
+      flex: 1;
+    }
+
+    /* Sidebar (filter column) */
+    .filter-column {
+      width: 25%;
+      padding: 20px;
+      background-color: #f8f9fa;
+      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    }
+    .filter-column h2 {
+      font-size: 22px;
+      margin-bottom: 15px;
+    }
+    .filter-group {
+      margin-bottom: 20px;
+    }
+    .filter-group label {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+    .filter-group input,
+    .filter-group select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .filter-column button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .filter-column button:hover {
+      background-color: #0056b3;
+    }
+
+    /* Job listings section */
+    .job-listings {
+      flex: 1;
+      padding: 20px;
+    }
+    .job-listings h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .listings {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .job-card {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 15px;
+      background-color: white;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+    }
+    .job-card:hover {
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+    .job-card h3 {
+      font-size: 20px;
+      margin: 0 0 10px;
+    }
+    .job-card p {
+      margin: 5px 0;
+      font-size: 14px;
+      color: #666;
+    }
+    .job-card button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      padding: 10px;
+      font-size: 14px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .job-card button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navbar -->
+  <div class="navbar">
+    <a href="homepage.html">Home</a>
+    <a href="manage-account.html">Manage Account</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Filter Column -->
+    <div class="filter-column">
+      <h2>Filters</h2>
+      <div class="filter-group">
+        <label for="job-type">Job Type</label>
+        <select id="job-type">
+          <option value="">Select...</option>
+          <option value="full-time">Full-Time</option>
+          <option value="part-time">Part-Time</option>
+          <option value="remote">Remote</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="location">Location</label>
+        <input type="text" id="location" placeholder="Enter location">
+      </div>
+      <div class="filter-group">
+        <label for="salary-range">Salary Range</label>
+        <input type="number" id="salary-min" placeholder="Min salary">
+        <input type="number" id="salary-max" placeholder="Max salary">
+      </div>
+      <button type="button">Apply Filters</button>
+    </div>
+
+    <!-- Job Listings Section -->
+    <div class="job-listings">
+      <h2>Available Jobs</h2>
+      <div class="listings">
+        <!-- Example Job Card -->
+        <div class="job-card">
+          <h3>Software Engineer</h3>
+          <p>Location: Remote</p>
+          <p>Salary: $100k - $120k</p>
+          <button>Apply Now</button>
+        </div>
+        <div class="job-card">
+          <h3>Graphic Designer</h3>
+          <p>Location: New York, NY</p>
+          <p>Salary: $60k - $80k</p>
+          <button>Apply Now</button>
+        </div>
+        <div class="job-card">
+          <h3>Marketing Manager</h3>
+          <p>Location: San Francisco, CA</p>
+          <p>Salary: $90k - $110k</p>
+          <button>Apply Now</button>
+        </div>
+        <!-- Add more job cards as needed -->
+      </div>
+    </div>
+  </div>
+</body>
+</html>

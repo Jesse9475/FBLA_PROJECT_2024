@@ -1,0 +1,121 @@
+{% block head %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/register.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #f0c0f0, #c0e8f8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .form-card {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .input-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      background-color: #f9f9f9;
+    }
+    .input-group i {
+      margin-right: 10px;
+      color: #888;
+    }
+    .input-group input {
+      border: none;
+      outline: none;
+      flex: 1;
+      font-size: 16px;
+      background: transparent;
+    }
+    button {
+      background-color: #007BFF;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    p {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <div class="form-card">
+      <h1>Register</h1>
+      <form id = "auth-form" action = "{{url_for('register')}}" method = "post">
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" id="username" name = "username" placeholder="Please create a valid Username">
+        </div>
+        
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="password" name = "password" placeholder="Please create a valid Password">
+        </div>
+        
+        <button type="submit" class = "btn btn-primary" onclick = "setActionForm('register')">Register</button>
+      </form>
+      <p>Already have an account? <a href="/login">Login</a></p>
+    </div>
+  </div>
+
+  <script>
+
+    function setActionForm(action) {
+
+      let form = document.getElementById("auth-form");
+      if (action === 'login') {
+
+        form.action = "{{url_for('login')}}"
+        form.method = "POST"
+        form.submit();
+
+      } else if(action === 'register') {
+        
+        form.action = "{{url_for('register')}}"
+        form.method = "POST"
+        form.submit();
+
+      }
+
+    }
+
+  </script>
+
+{% endblock %}
