@@ -156,47 +156,37 @@
     <!-- Main Content -->
     <div class="container">
         <!-- Filter Column -->
-        <div class="filter-column">
+        <form class="filter-column" method="get" action="/posts">
             <h2>Filters</h2>
+            <label for="salary-range">Salary Range</label>
+            <br>
             <div class="filter-group">
-                <label for="job-type">Job Type</label>
-                <select id="job-type">
-                    <option value="">Select...</option>
-                    <option value="full-time">Full-Time</option>
-                    <option value="part-time">Part-Time</option>
-                    <option value="remote">Remote</option>
-                </select>
+                <input type="number" step="1000" name = "salary_min" id="salary_min" placeholder="Min salary">
             </div>
-            <div class="filter-group">
-                <label for="location">Location</label>
-                <input type="text" id="location" placeholder="Enter location">
+            <div class = "filter-group">
+            <input type="number" step="1000" name = "salary_max" id="salary_max" placeholder="Max salary">
             </div>
-            <div class="filter-group">
-                <label for="salary-range">Salary Range</label>
-                <input type="range" step = "1000" id="salary_min" placeholder="Min salary">
-                <input type="range" step = "1000" id="salary_max" placeholder="Max salary">
-            </div>
-            <button type="button">Apply Filters</button>
-        </div>
+            <button type="submit">Apply Filters</button>
+        </form>
 
-            <div class = "job-listings">
-                <h2>Available Jobs</h2>
-                <div class = "listings">
+        <div class="job-listings">
+            <h2>Available Jobs</h2>
+            <div class="listings">
 
-                    {% for post in posts %}
-                    <div class = "job-card">
+                {% for post in posts %}
+                <div class="job-card">
 
-                        <h3>{{post.title}}</h3>
-                        <b><small>Written by {{post.author}} on {{post.date_posted}}</small></b>
-                        <p>{{post.content}}</p>
-                        <p>{{post.salary}}</p>
-                        <button>Apply Now</button>
+                    <h3>{{post.title}}</h3>
+                    <b><small>Written by {{post.author}} on {{post.date_posted}}</small></b>
+                    <p>{{post.content}}</p>
+                    <p>{{post.salary}}</p>
+                    <button>Apply Now</button>
 
-                    </div>
-            
-                    {% endfor %}
-                    
                 </div>
+
+                {% endfor %}
+
             </div>
+        </div>
 
         {% endblock %}

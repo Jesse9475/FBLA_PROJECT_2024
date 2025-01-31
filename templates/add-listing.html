@@ -298,20 +298,25 @@
   <div class="modal" id="addListingModal">
     <div class="modal-content">
       <h3>Add New Job Listing</h3>
-      <input type="text" id="jobName" placeholder="Job Name" required />
-      <textarea id="jobDescription" placeholder="Job Description" required></textarea>
-      <input type="text" id="jobLocation" placeholder="Location (City, State)" required />
-      <input type="text" id="jobSalary" placeholder="Salary Range" required />
-      <select id="jobExperience" required>
-        <option value="">Select Experience Level</option>
-        <option value="entry">Entry Level</option>
-        <option value="mid">Mid Level</option>
-        <option value="senior">Senior Level</option>
-      </select>
-      <div class="form-actions">
-        <button class="cancel" onclick="closeModal()">Cancel</button>
-        <button class="save" onclick="saveListing()">Save</button>
-      </div>
+      <form action='/create_job_posting' method='POST'>
+        <label for="job_title">Company Name:</label>
+        <input class="form-control" type="text" name="applicant_name" id="applicant_name" placeholder="Enter Your Companies Name" required>
+        <br>
+
+        <label for="applicant_name">Position Name:</label>
+        <input class="form-control" type="text" name="position" id="position" placeholder="Enter Position Name" required>
+        <br>
+
+        <label for="applicant_name">Starting Salary:</label>
+        <input class="form-control" type="text" name="salary" id="salary" placeholder="Enter Starting Salary" required>
+        <br>
+
+        <label for="application_content">Other Information:</label>
+        <textarea class="form-control" id="cover_letter" rows="3" name="cover_letter" placeholder="Enter Other information Here" optional></textarea>
+        <br>
+
+        <input type="submit" class="btn btn-success" value="Submit Posting Request">
+    </form>
     </div>
   </div>
 
