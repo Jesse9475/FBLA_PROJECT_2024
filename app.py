@@ -99,7 +99,7 @@ def posts():
         all_posts = query.order_by(BlogPost.date_posted).all()
         print(all_posts)
 
-    return render_template('apply.html', posts = all_posts)
+    return render_template('posts.html', posts = all_posts)
 
 # @app.route('/posts/delete/<int:id>')
 # def delete(id):
