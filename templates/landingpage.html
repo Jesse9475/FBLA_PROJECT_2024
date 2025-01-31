@@ -1,0 +1,303 @@
+{% extends "template.html" %}
+
+{% block head %}
+<title>Ascend - Connecting Students with Jobs</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+    /* Global Styles */
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        background-color: #ffffff;
+        color: #1d1d1f;
+        line-height: 1.6;
+    }
+
+    /* Hero Section */
+    .hero-section {
+        background: linear-gradient(135deg, #007aff, #00c6ff);
+        color: #ffffff;
+        padding: 100px 0;
+        text-align: center;
+    }
+
+    .hero-section h1 {
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .hero-section p {
+        font-size: 1.25rem;
+        margin-bottom: 40px;
+    }
+
+    .hero-section .btn {
+        font-size: 1.1rem;
+        padding: 12px 30px;
+        border-radius: 30px;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .hero-section .btn-primary {
+        background-color: #ffffff;
+        color: #007aff;
+        border: none;
+    }
+
+    .hero-section .btn-primary:hover {
+        background-color: #f0f0f0;
+        transform: translateY(-5px);
+    }
+
+    .hero-section .btn-outline-light {
+        border-color: #ffffff;
+        color: #ffffff;
+    }
+
+    .hero-section .btn-outline-light:hover {
+        background-color: #ffffff;
+        color: #007aff;
+        transform: translateY(-5px);
+    }
+
+    /* Features Section */
+    .features-section {
+        padding: 80px 0;
+        background-color: #f8f9fa;
+    }
+
+    .features-section h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+
+    .feature-card {
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .feature-card:hover {
+        transform: translateY(-10px);
+    }
+
+    .feature-card i {
+        font-size: 2.5rem;
+        color: #007aff;
+        margin-bottom: 20px;
+    }
+
+    .feature-card h3 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .feature-card p {
+        font-size: 1rem;
+        color: #6e6e73;
+    }
+
+    /* Testimonials Section */
+    .testimonials-section {
+        padding: 80px 0;
+        background-color: #ffffff;
+    }
+
+    .testimonials-section h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 40px;
+        text-align: center;
+    }
+
+    .testimonial-card {
+        background-color: #f8f9fa;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .testimonial-card img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+
+    .testimonial-card p {
+        font-size: 1rem;
+        color: #6e6e73;
+        margin-bottom: 20px;
+    }
+
+    .testimonial-card h4 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .testimonial-card span {
+        font-size: 0.9rem;
+        color: #007aff;
+    }
+
+    /* Call-to-Action Section */
+    .cta-section {
+        background: linear-gradient(135deg, #007aff, #00c6ff);
+        color: #ffffff;
+        padding: 80px 0;
+        text-align: center;
+    }
+
+    .cta-section h2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .cta-section p {
+        font-size: 1.25rem;
+        margin-bottom: 40px;
+    }
+
+    .cta-section .btn {
+        font-size: 1.1rem;
+        padding: 12px 30px;
+        border-radius: 30px;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+    }
+
+    .cta-section .btn-primary {
+        background-color: #ffffff;
+        color: #007aff;
+        border: none;
+    }
+
+    .cta-section .btn-primary:hover {
+        background-color: #f0f0f0;
+        transform: translateY(-5px);
+    }
+
+    /* Footer */
+    .footer-custom {
+        background-color: #1d1d1f;
+        color: #ffffff;
+        padding: 40px 0;
+        text-align: center;
+    }
+
+    .footer-custom a {
+        color: #007aff;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .footer-custom a:hover {
+        color: #00c6ff;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <h1>Welcome to Ascend</h1>
+        <p>Your gateway to finding the perfect job as a student or posting opportunities as an employer. Start your journey today!</p>
+        <div class="mt-4">
+            <a href="/posts" class="btn btn-primary me-3">Find Jobs</a>
+            <a href="/create_job_posting" class="btn btn-outline-light">Post Jobs</a>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-section">
+    <div class="container">
+        <h2>Why Choose Ascend?</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <i class="bi bi-search"></i>
+                    <h3>Find Jobs Easily</h3>
+                    <p>Discover job opportunities tailored for students with our intuitive search and filtering tools.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <i class="bi bi-briefcase"></i>
+                    <h3>Post Jobs Effortlessly</h3>
+                    <p>Employers can post jobs in minutes and connect with talented students ready to work.</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="feature-card">
+                    <i class="bi bi-people"></i>
+                    <h3>User-Friendly for All</h3>
+                    <p>Our platform is designed to be simple and accessible for both students and employers.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section">
+    <div class="container">
+        <h2>What Our Users Say</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="testimonial-card">
+                    <img src="https://via.placeholder.com/80" alt="Student 1">
+                    <p>"Ascend helped me find my first internship! The process was so easy and stress-free."</p>
+                    <h4>Emily Johnson</h4>
+                    <span>Student, University of XYZ</span>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="testimonial-card">
+                    <img src="https://via.placeholder.com/80" alt="Employer 1">
+                    <p>"Posting jobs on Ascend is a breeze, and we've found some amazing student talent!"</p>
+                    <h4>Michael Smith</h4>
+                    <span>HR Manager, Company A</span>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="testimonial-card">
+                    <img src="https://via.placeholder.com/80" alt="Student 2">
+                    <p>"I love how simple and straightforward Ascend is. It's perfect for busy students like me."</p>
+                    <h4>Sarah Lee</h4>
+                    <span>Student, ABC College</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call-to-Action Section -->
+<section class="cta-section">
+    <div class="container">
+        <h2>Ready to Get Started?</h2>
+        <p>Join thousands of students and employers who are already benefiting from Ascend.</p>
+        <div class="mt-4">
+            <a href="/posts" class="btn btn-primary me-3">Find Jobs</a>
+            <a href="/create_job_posting" class="btn btn-outline-light">Post Jobs</a>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer-custom">
+    <div class="container">
+        <p class="mb-0">&copy; 2023 Ascend. All rights reserved. <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </div>
+</footer>
+{% endblock %}

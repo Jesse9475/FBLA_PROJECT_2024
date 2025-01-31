@@ -1,12 +1,10 @@
+{% extends "template.html" %}
+
 {% block head %}
 <title>Posts</title>
-{% endblock %}
-
-{% block body %}
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Job Listings</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.0/nouislider.min.css">
 <style>
+    /* Your existing styles */
     body {
         margin: 0;
         font-family: Arial, sans-serif;
@@ -15,7 +13,6 @@
         height: 100vh;
     }
 
-    /* Top navigation bar */
     .navbar {
         background-color: #007BFF;
         color: white;
@@ -36,13 +33,11 @@
         text-decoration: underline;
     }
 
-    /* Layout */
     .container {
         display: flex;
         flex: 1;
     }
 
-    /* Sidebar (filter column) */
     .filter-column {
         width: 25%;
         padding: 20px;
@@ -88,7 +83,6 @@
         background-color: #0056b3;
     }
 
-    /* Job listings section */
     .job-listings {
         flex: 1;
         padding: 20px;
@@ -144,49 +138,69 @@
         background-color: #0056b3;
     }
 </style>
-</head>
+{% endblock %}
 
-<body>
-    <!-- Top Navbar -->
-    <div class="navbar">
-        <a href="homepage.html">Home</a>
-        <a href="manage-account.html">Manage Account</a>
-    </div>
-
-    <!-- Main Content -->
-    <div class="container">
-        <!-- Filter Column -->
-        <form class="filter-column" method="get" action="/posts">
-            <h2>Filters</h2>
+{% block body %}
+<!-- Main Content -->
+<div class="container">
+    <!-- Filter Column -->
+    <form class="filter-column" method="get" action="/posts">
+        <h2>Filters</h2>
+        <div class="filter-group">
             <label for="salary-range">Salary Range</label>
-            <br>
-            <div class="filter-group">
-                <input type="number" step="1000" name = "salary_min" id="salary_min" placeholder="Min salary">
+            <div id="salary-range"></div>
+            <div id="salary-values">
+                <span id="salary-min-value"></span> - <span id="salary-max-value"></span>
             </div>
-            <div class = "filter-group">
-            <input type="number" step="1000" name = "salary_max" id="salary_max" placeholder="Max salary">
-            </div>
-            <button type="submit">Apply Filters</button>
-        </form>
-
-        <div class="job-listings">
-            <h2>Available Jobs</h2>
-            <div class="listings">
-
-                {% for post in posts %}
-                <div class="job-card">
-
-                    <h3>{{post.title}}</h3>
-                    <b><small>Written by {{post.author}} on {{post.date_posted}}</small></b>
-                    <p>{{post.content}}</p>
-                    <p>{{post.salary}}</p>
-                    <button>Apply Now</button>
-
-                </div>
-
-                {% endfor %}
-
-            </div>
+            <input type="hidden" name="salary_min" id="salary_min">
+            <input type="hidden" name="salary_max" id="salary_max">
         </div>
+        <button type="submit">Apply Filters</button>
+    </form>
 
-        {% endblock %}
+    <div class="job-listings">
+        <h2>Available Jobs</h2>
+        <div class="listings">
+            {% for post in posts %}
+            <div class="job-card">
+                <h3>{{post.title}}</h3>
+                <b><small>Written by {{post.author}} on {{post.date_posted}}</small></b>
+                <p>{{post.content}}</p>
+                <p>{{post.salary}}</p>
+                <button>Apply Now</button>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.0/nouislider.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var salaryRange = document.getElementById('salary-range');
+        var salaryMinValue = document.getElementById('salary-min-value');
+        var salaryMaxValue = document.getElementById('salary-max-value');
+        var salaryMinInput = document.getElementById('salary_min');
+        var salaryMaxInput = document.getElementById('salary_max');
+
+        noUiSlider.create(salaryRange, {
+            start: [0, 10000000],
+            connect: true,
+            range: {
+                'min': 0,
+                'max': 10000000
+            },
+            step: 1000
+        });
+
+        salaryRange.noUiSlider.on('update', function (values, handle) {
+            var minValue = Math.round(values[0]);
+            var maxValue = Math.round(values[1]);
+            salaryMinValue.textContent = minValue;
+            salaryMaxValue.textContent = maxValue;
+            salaryMinInput.value = minValue;
+            salaryMaxInput.value = maxValue;
+        });
+    });
+</script>
+{% endblock %}

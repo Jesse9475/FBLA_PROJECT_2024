@@ -192,6 +192,10 @@ def dashboard():
         return render_template("homepage.html", username=session['username'], user=user)  # Pass the 'user' object
     return redirect(url_for('index'))
 
+@app.route("/landingpage")
+def homepage():
+    return render_template("landingpage.html")
+
 @app.route("/logout")
 def logout():
     session.pop('username', None)

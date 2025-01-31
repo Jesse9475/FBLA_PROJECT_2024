@@ -1,58 +1,90 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome</title>
-  <style>
+{% extends "template.html" %}
+
+{% block head %}
+<title>Portfolio</title>
+<style>
+    /* Body styling */
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to right, #ffecd2, #fcb69f);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right, #ffecd2, #fcb69f);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding-top: 80px; /* To account for the fixed header */
     }
+
     h1 {
-      font-size: 32px;
-      margin-bottom: 20px;
-      text-align: center;
+        font-size: 32px;
+        margin-bottom: 20px;
+        text-align: center;
+        color: #1d1d1f; /* Consistent with the template's color scheme */
     }
+
     .buttons {
-      display: flex;
-      gap: 20px;
+        display: flex;
+        gap: 20px;
     }
+
     .buttons button {
-      background-color: #007BFF;
-      color: #fff;
-      border: none;
-      padding: 15px 30px;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: all 0.3s ease;
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        padding: 15px 30px;
+        font-size: 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
     }
+
     .buttons button:hover {
-      background-color: #0056b3;
+        background-color: #0056b3;
     }
+
     .buttons button:active {
-      transform: scale(0.95);
+        transform: scale(0.95);
     }
+
     .buttons a {
-      text-decoration: none;
-      color: white;
+        text-decoration: none;
+        color: white;
     }
-  </style>
-</head>
-<body>
-  <h1>Welcome, <span id="username">{{username}}</span>!</h1>
-  <div class="buttons">
-    <button><a href="/posts">Apply Now!</a></button>
-    <button><a href="/create_job_posting">Add Listings</a></button>
-  </div>
 
+    /* Portfolio-specific styling */
+    .portfolio-content {
+        max-width: 800px;
+        width: 100%;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
 
-</body>
-</html>
+    .portfolio-content h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        color: #1d1d1f;
+    }
+
+    .portfolio-content p {
+        font-size: 16px;
+        color: #6e6e73;
+        line-height: 1.6;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- Main Content -->
+<div class="portfolio-content">
+    <h1>Welcome, <span id="username">{{username}}</span>!</h1>
+    <p>Here’s a quick overview of your portfolio. You can apply for jobs or add new listings.</p>
+    <div class="buttons">
+        <button><a href="/posts">Apply Now!</a></button>
+        <button><a href="/create_job_posting">Add Listings</a></button>
+    </div>
+</div>
+{% endblock %}
