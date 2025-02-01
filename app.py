@@ -67,7 +67,7 @@ class JobApplication(db.Model):
         return f'JobApplication({self.applicant_name}, {self.position}, {self.cover_letter})'
     
 
-@app.route('/')
+@app.route('/landingpage')
 def index():
     if "username" in session:
         return redirect(url_for('dashboard'))
@@ -192,7 +192,7 @@ def dashboard():
         return render_template("homepage.html", username=session['username'], user=user)  # Pass the 'user' object
     return redirect(url_for('index'))
 
-@app.route("/landingpage")
+@app.route("/")
 def homepage():
     return render_template("landingpage.html")
 
