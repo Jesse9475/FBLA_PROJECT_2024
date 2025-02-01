@@ -34,7 +34,7 @@ class User(db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-# Updated BlogPost model
+#Model for Blog Posts
 class BlogPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -46,11 +46,14 @@ class BlogPost(db.Model):
     applicant_name = db.Column(db.String(100), nullable=True)
     position = db.Column(db.String(100), nullable=True)
     cover_letter = db.Column(db.Text, nullable=True)
-    salary = db.Column(db.Float, nullable = True)
-
+    salary = db.Column(db.Integer, nullable=True)
+    jobType = db.Column(db.String, nullable=True)  # Correct column name
+    experienceLevel = db.Column(db.String, nullable=True)  # Correct column name
+    remoteOnly = db.Column(db.String, nullable=True)  # Correct column name
 
     def __repr__(self):
         return f'Blog post {self.id}'
+
 
 class JobApplication(db.Model):
     __bind_key__ = 'applications'
@@ -62,7 +65,10 @@ class JobApplication(db.Model):
     approved = db.Column(db.Boolean, nullable=False, default=False)
     denied = db.Column(db.Boolean, nullable=False, default=False)
     username_author = db.Column(db.String(100), nullable=False)
-    salary = db.Column(db.Float, nullable=True)
+    salary = db.Column(db.Integer, nullable=True)
+    jobType = db.Column(db.String, nullable = True)
+    experienceLevel = db.Column(db.String, nullable = True)
+    remoteOnly = db.Column(db.String, nullable = True)
     def __repr__(self):
         return f'JobApplication({self.applicant_name}, {self.position}, {self.cover_letter})'
     
@@ -74,32 +80,63 @@ def index():
     return render_template('index.html')
 
 @app.route('/posts', methods=['GET', 'POST'])
+@app.route('/posts', methods=['GET', 'POST'])
 def posts():
+    salary_min = None
+    salary_max = None
 
-    salary_min = request.args.get('salary_min', type = float)
-    salary_max = request.args.get('salary_max', type = float)
+    salary_range = request.args.get('salary_range')
+    job_type = request.args.get('job_type')
+    experience_level = request.args.get('experience_level')
+    remote_only = request.args.get('remote_only')
+
+    if salary_range:
+        if salary_range == "0-50000":
+            salary_min, salary_max = 0, 50000
+        elif salary_range == "50000-100000":
+            salary_min, salary_max = 50000, 100000
+        elif salary_range == "100000+":
+            salary_min, salary_max = 100000, None
 
     if request.method == 'POST':
         post_title = request.form['applicant_name']
         post_content = request.form['cover_letter']
         post_author = request.form['position']
-        post_salary = request.form['salary']
-        new_post = BlogPost(title=post_title, content = post_content, author = post_author, salary = post_salary)
+        post_salary = int(request.form['salary'])  # Convert to integer
+        post_type = request.form['jobType']
+        post_experience = request.form['experienceLevel']
+        post_remote = request.form['remoteOnly']
+
+        new_post = BlogPost(
+            title=post_title,
+            content=post_content,
+            author=post_author,
+            salary=post_salary,
+            jobType=post_type,
+            experienceLevel=post_experience,
+            remoteOnly=post_remote
+        )
         db.session.add(new_post)
         db.session.commit()
+
         return redirect('/posts')
-    else:
-        query = BlogPost.query
-        
-        if salary_min is not None:
-            query = query.filter(BlogPost.salary >= salary_min)
-        if salary_max is not None:
-            query = query.filter(BlogPost.salary <= salary_max)
 
-        all_posts = query.order_by(BlogPost.date_posted).all()
-        print(all_posts)
+    query = BlogPost.query
+    
+    if salary_min is not None:
+        query = query.filter(BlogPost.salary >= salary_min)
+    if salary_max is not None:
+        query = query.filter(BlogPost.salary <= salary_max)
+    if job_type:
+        query = query.filter(BlogPost.jobType == job_type)
+    if experience_level:
+        query = query.filter(BlogPost.experienceLevel == experience_level)
+    if remote_only:
+        query = query.filter(BlogPost.remoteOnly == remote_only)
 
-    return render_template('what.html', posts = all_posts)
+    all_posts = query.order_by(BlogPost.date_posted).all()
+
+    return render_template('what.html', posts=all_posts)
 
 # @app.route('/posts/delete/<int:id>')
 # def delete(id):
@@ -132,15 +169,21 @@ def apply():
         username_author = session['username']
         applicant_name = request.form['applicant_name']
         position = request.form['position']
-        salary = request.form['salary']
+        salary = int(request.form['salary'])  # Convert to integer
         cover_letter = request.form.get('cover_letter', '')  # Optional field
+        jobType = request.form['jobType']
+        experienceLevel = request.form['experienceLevel']
+        remoteOnly = request.form['remoteOnly']
 
         new_application = JobApplication(
-            username_author = username_author,
+            username_author=username_author,
             applicant_name=applicant_name,
             position=position,
             cover_letter=cover_letter,
-            salary=salary
+            salary=salary,
+            jobType=jobType,
+            experienceLevel=experienceLevel,
+            remoteOnly=remoteOnly
         )
         db.session.add(new_application)
         db.session.commit()
@@ -247,7 +290,10 @@ def approve_application(id):
         applicant_name=application.applicant_name,
         position=application.position,
         cover_letter=application.cover_letter,
-        salary=application.salary
+        salary=application.salary,
+        jobType=application.jobType,
+        experienceLevel=application.experienceLevel,
+        remoteOnly=application.remoteOnly
     )
     db.session.add(new_post)
     db.session.commit()
