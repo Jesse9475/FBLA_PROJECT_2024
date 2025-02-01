@@ -1,193 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Job Listings</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Job - Ascend</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        /* Global Styles */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #ffffff;
+            color: #1d1d1f;
+            line-height: 1.6;
+        }
 
-    /* Top navigation bar */
-    .navbar {
-      background-color: #007BFF;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 20px;
-    }
-    .navbar a {
-      color: white;
-      text-decoration: none;
-      font-size: 18px;
-      margin: 0 10px;
-    }
-    .navbar a:hover {
-      text-decoration: underline;
-    }
+        /* Job Details Section */
+        .job-details-section {
+            padding: 60px 0;
+        }
 
-    /* Layout */
-    .container {
-      display: flex;
-      flex: 1;
-    }
+        .job-details-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
 
-    /* Sidebar (filter column) */
-    .filter-column {
-      width: 25%;
-      padding: 20px;
-      background-color: #f8f9fa;
-      box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    }
-    .filter-column h2 {
-      font-size: 22px;
-      margin-bottom: 15px;
-    }
-    .filter-group {
-      margin-bottom: 20px;
-    }
-    .filter-group label {
-      display: block;
-      font-size: 16px;
-      margin-bottom: 5px;
-    }
-    .filter-group input,
-    .filter-group select {
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
-      font-size: 14px;
-    }
-    .filter-column button {
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      padding: 10px;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-      width: 100%;
-    }
-    .filter-column button:hover {
-      background-color: #0056b3;
-    }
+        .job-details-section .job-meta {
+            color: #6e6e73;
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
 
-    /* Job listings section */
-    .job-listings {
-      flex: 1;
-      padding: 20px;
-    }
-    .job-listings h2 {
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-    .listings {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
-    }
-    .job-card {
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 15px;
-      background-color: white;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      transition: box-shadow 0.3s ease;
-    }
-    .job-card:hover {
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    }
-    .job-card h3 {
-      font-size: 20px;
-      margin: 0 0 10px;
-    }
-    .job-card p {
-      margin: 5px 0;
-      font-size: 14px;
-      color: #666;
-    }
-    .job-card button {
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      padding: 10px;
-      font-size: 14px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    .job-card button:hover {
-      background-color: #0056b3;
-    }
-  </style>
+        .job-details-section .job-meta span {
+            margin-right: 15px;
+        }
+
+        .job-details-section .job-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        .job-details-section .btn-apply {
+            background-color: #007aff;
+            color: #ffffff;
+            font-size: 1.1rem;
+            padding: 12px 30px;
+            border-radius: 30px;
+            transition: background-color 0.3s ease;
+        }
+
+        .job-details-section .btn-apply:hover {
+            background-color: #005bb5;
+        }
+
+        /* Application Form Section */
+        .application-form-section {
+            padding: 60px 0;
+            background-color: #f8f9fa;
+        }
+
+        .application-form-section h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .application-form-section .form-label {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .application-form-section .form-control {
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+
+        .application-form-section .form-control:focus {
+            border-color: #007aff;
+            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+        }
+
+        .application-form-section .btn-submit {
+            background-color: #007aff;
+            color: #ffffff;
+            font-size: 1.1rem;
+            padding: 12px 30px;
+            border-radius: 30px;
+            transition: background-color 0.3s ease;
+        }
+
+        .application-form-section .btn-submit:hover {
+            background-color: #005bb5;
+        }
+    </style>
 </head>
+
 <body>
-  <!-- Top Navbar -->
-  <div class="navbar">
-    <a href="homepage.html">Home</a>
-    <a href="manage-account.html">Manage Account</a>
-  </div>
 
-  <!-- Main Content -->
-  <div class="container">
-    <!-- Filter Column -->
-    <div class="filter-column">
-      <h2>Filters</h2>
-      <div class="filter-group">
-        <label for="job-type">Job Type</label>
-        <select id="job-type">
-          <option value="">Select...</option>
-          <option value="full-time">Full-Time</option>
-          <option value="part-time">Part-Time</option>
-          <option value="remote">Remote</option>
-        </select>
-      </div>
-      <div class="filter-group">
-        <label for="location">Location</label>
-        <input type="text" id="location" placeholder="Enter location">
-      </div>
-      <div class="filter-group">
-        <label for="salary-range">Salary Range</label>
-        <input type="number" id="salary-min" placeholder="Min salary">
-        <input type="number" id="salary-max" placeholder="Max salary">
-      </div>
-      <button type="button">Apply Filters</button>
+    <!-- Job Details Section -->
+    <section class="job-details-section">
+        <div class="container">
+            <h1>Software Engineering Intern</h1>
+            <div class="job-meta">
+                <span><i class="bi bi-building"></i> TechCorp</span>
+                <span><i class="bi bi-geo-alt"></i> Remote</span>
+                <span><i class="bi bi-clock"></i> Full-Time</span>
+                <span><i class="bi bi-cash"></i> $20 - $25/hour</span>
+            </div>
+            <div class="job-description">
+                <p>
+                    TechCorp is looking for a motivated Software Engineering Intern to join our team. You will work on
+                    cutting-edge projects, collaborate with experienced engineers, and gain hands-on experience in
+                    software development.
+                </p>
+                <h3>Responsibilities:</h3>
+                <ul>
+                    <li>Develop and maintain web applications using modern technologies.</li>
+                    <li>Collaborate with cross-functional teams to design and implement new features.</li>
+                    <li>Write clean, maintainable, and efficient code.</li>
+                    <li>Participate in code reviews and team meetings.</li>
+                </ul>
+                <h3>Requirements:</h3>
+                <ul>
+                    <li>Currently pursuing a degree in Computer Science or a related field.</li>
+                    <li>Experience with JavaScript, Python, or Java.</li>
+                    <li>Strong problem-solving skills and attention to detail.</li>
+                    <li>Ability to work independently and in a team environment.</li>
+                </ul>
+            </div>
+            <button class="btn btn-apply" data-bs-toggle="modal" data-bs-target="#applicationModal">Apply Now</button>
+        </div>
+    </section>
+
+    <!-- Application Form Section (Modal) -->
+    <div class="modal fade" id="applicationModal" tabindex="-1" aria-labelledby="applicationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title fs-5" id="applicationModalLabel">Apply for Software Engineering Intern</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number</label>
+                            <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="resume" class="form-label">Upload Resume</label>
+                            <input type="file" class="form-control" id="resume" accept=".pdf,.doc,.docx" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="coverLetter" class="form-label">Cover Letter</label>
+                            <textarea class="form-control" id="coverLetter" rows="5" placeholder="Write your cover letter here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-submit w-100">Submit Application</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Job Listings Section -->
-    <div class="job-listings">
-      <h2>Available Jobs</h2>
-      <div class="listings">
-        <!-- Example Job Card -->
-        <div class="job-card">
-          <h3>Software Engineer</h3>
-          <p>Location: Remote</p>
-          <p>Salary: $100k - $120k</p>
-          <button>Apply Now</button>
-        </div>
-        <div class="job-card">
-          <h3>Graphic Designer</h3>
-          <p>Location: New York, NY</p>
-          <p>Salary: $60k - $80k</p>
-          <button>Apply Now</button>
-        </div>
-        <div class="job-card">
-          <h3>Marketing Manager</h3>
-          <p>Location: San Francisco, CA</p>
-          <p>Salary: $90k - $110k</p>
-          <button>Apply Now</button>
-        </div>
-        <!-- Add more job cards as needed -->
-      </div>
-    </div>
-  </div>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 </body>
+
 </html>

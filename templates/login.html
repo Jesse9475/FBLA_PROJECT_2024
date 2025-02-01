@@ -6,7 +6,7 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #eec0c6, #7ee8fa);
+            background: linear-gradient(135deg, #f8f8f8, #63acff9c);
             height: 100vh;
             display: flex;
             align-items: center;
@@ -92,6 +92,7 @@
             form.action = "{{url_for('login')}}"
             form.method = "POST"
             form.submit();
+            if_logged_in = True;
     
           } else if(action === 'register') {
             
