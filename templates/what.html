@@ -1,7 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
+
+{% block head %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Opportunities - Ascend</title>
@@ -280,9 +279,9 @@
             background-color: #005bb5;
         }
     </style>
-</head>
+{% endblock %}
 
-<body>
+{% block body %}
     <!-- Header -->
     <header class="navbar-custom fixed-top">
         <div class="container">
@@ -301,7 +300,7 @@
                 </ul>
 
                 <div class="text-end">
-                    {% if user_logged_in %}
+                    {% if 'username' in session %}
                         <!-- Profile Icon (Visible After Login) -->
                         <a href="/manage-account" class="profile-icon">
                             <i class="bi bi-person"></i> <!-- Bootstrap Icons -->
@@ -338,55 +337,15 @@
 
                 <!-- Job Cards -->
                 <div class="job-card">
-                    <h3>Software Engineering Intern</h3>
-                    <div class="job-meta">
-                        <span><i class="bi bi-building"></i> TechCorp</span>
-                        <span><i class="bi bi-geo-alt"></i> Remote</span>
-                        <span><i class="bi bi-clock"></i> Full-Time</span>
-                        <span><i class="bi bi-cash"></i> $20 - $25/hour</span>
+                    {% for post in posts %}
+                    <div class="job-card">
+                        <h3>{{post.title}}</h3>
+                        <b><small>Written by {{post.author}} on {{post.date_posted}}</small></b>
+                        <p>{{post.content}}</p>
+                        <p>{{post.salary}}</p>
+                        <button>Apply Now</button>
                     </div>
-                    <div class="job-description">
-                        <p>
-                            TechCorp is looking for a motivated Software Engineering Intern to join our team. You will work on
-                            cutting-edge projects, collaborate with experienced engineers, and gain hands-on experience in
-                            software development.
-                        </p>
-                    </div>
-                    <a href="job-application.html" class="btn btn-apply">Apply Now</a>
-                </div>
-
-                <div class="job-card">
-                    <h3>Marketing Assistant</h3>
-                    <div class="job-meta">
-                        <span><i class="bi bi-building"></i> Creative Agency</span>
-                        <span><i class="bi bi-geo-alt"></i> New York</span>
-                        <span><i class="bi bi-clock"></i> Part-Time</span>
-                        <span><i class="bi bi-cash"></i> $18 - $22/hour</span>
-                    </div>
-                    <div class="job-description">
-                        <p>
-                            We are seeking a creative and detail-oriented Marketing Assistant to support our marketing team.
-                            Responsibilities include social media management, content creation, and campaign coordination.
-                        </p>
-                    </div>
-                    <a href="job-application.html" class="btn btn-apply">Apply Now</a>
-                </div>
-
-                <div class="job-card">
-                    <h3>Data Analyst Intern</h3>
-                    <div class="job-meta">
-                        <span><i class="bi bi-building"></i> DataWorks</span>
-                        <span><i class="bi bi-geo-alt"></i> San Francisco</span>
-                        <span><i class="bi bi-clock"></i> Internship</span>
-                        <span><i class="bi bi-cash"></i> $15 - $20/hour</span>
-                    </div>
-                    <div class="job-description">
-                        <p>
-                            DataWorks is hiring a Data Analyst Intern to assist in analyzing large datasets, creating reports,
-                            and providing insights to drive business decisions. Proficiency in Excel and SQL is required.
-                        </p>
-                    </div>
-                    <a href="job-application.html" class="btn btn-apply">Apply Now</a>
+                    {% endfor %}
                 </div>
             </div>
         </section>
@@ -419,15 +378,18 @@
             </div>
 
             <!-- Salary Range Filter -->
-            <div class="filter-group">
-                <label for="salary-range">Salary Range</label>
-                <select id="salary-range" onchange="updateFilters()">
-                    <option value="">Any</option>
-                    <option value="0-50000">$0 - $50,000</option>
-                    <option value="50000-100000">$50,000 - $100,000</option>
-                    <option value="100000+">$100,000+</option>
-                </select>
-            </div>
+            <form id="filter-form" method="GET" action="{{ url_for('posts') }}">
+                <div class="filter-group">
+                    <label for="salary-range">Salary Range</label>
+                    <select id="salary-range" name="salary_range" onchange="updateFilters()">
+                        <option value="">Any</option>
+                        <option value="0-50000" {% if salary_min == 0 and salary_max == 50000 %}selected{% endif %}>$0 - $50,000</option>
+                        <option value="50000-100000" {% if salary_min == 50000 and salary_max == 100000 %}selected{% endif %}>$50,000 - $100,000</option>
+                        <option value="100000+" {% if salary_min == 100000 and salary_max is none %}selected{% endif %}>$100,000+</option>
+                    </select>
+                </div>
+            </form>
+            
 
             <!-- Experience Level Filter -->
             <div class="filter-group">
@@ -503,6 +465,4 @@
             updateFilters();
         }
     </script>
-</body>
-
-</html>
+{% endblock %}
