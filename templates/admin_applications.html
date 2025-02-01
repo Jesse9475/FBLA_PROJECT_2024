@@ -1,34 +1,129 @@
-{% extends 'base.html' %}
+{% extends 'template.html' %}
+
+{% block head %}
+    <title>Unapproved Job Postings - Ascend</title>
+    <style>
+        /* Job Listings Section */
+        .job-listings-section {
+            padding: 60px 0;
+        }
+
+        .job-listings-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .job-listings-section .job-card {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .job-listings-section .job-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .job-listings-section .job-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .job-listings-section .job-card .job-meta {
+            color: #6e6e73;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .job-listings-section .job-card .job-meta span {
+            margin-right: 10px;
+        }
+
+        .job-listings-section .job-card .job-description {
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .job-listings-section .job-card .btn-apply {
+            background-color: #007aff;
+            color: #ffffff;
+            font-size: 1rem;
+            padding: 8px 20px;
+            border-radius: 30px;
+            transition: background-color 0.3s ease;
+        }
+
+        .job-listings-section .job-card .btn-apply:hover {
+            background-color: #005bb5;
+        }
+
+        .job-listings-section .btn-approve {
+            background-color: #28a745;
+            color: #ffffff;
+            font-size: 1rem;
+            padding: 8px 20px;
+            border-radius: 30px;
+            transition: background-color 0.3s ease;
+        }
+
+        .job-listings-section .btn-approve:hover {
+            background-color: #218838;
+        }
+
+        .job-listings-section .btn-deny {
+            background-color: #dc3545;
+            color: #ffffff;
+            font-size: 1rem;
+            padding: 8px 20px;
+            border-radius: 30px;
+            transition: background-color 0.3s ease;
+        }
+
+        .job-listings-section .btn-deny:hover {
+            background-color: #c82333;
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
-<div class="container">
-    <h2>Unapproved Job Postings</h2>
-    
-    <!-- Check if there are applications -->
-    {% if applications %}
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Copmany Name</th>
-                <th>Job Position</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for application in applications %}
-            <tr>
-                <td>{{ application.applicant_name }}</td>
-                <td>{{ application.position }}</td>
-                <td>
-                    <a href="{{ url_for('approve_application', id=application.id) }}" class="btn btn-success">Approve</a>
-                    <a href="{{ url_for('deny_application', id=application.id) }}" class="btn btn-danger">Deny</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-        <p>No unapproved applications at the moment.</p>
-    {% endif %}
-</div>
+    <!-- Main Content -->
+    <div class="container mt-5 pt-5">
+        <!-- Job Listings Section -->
+        <section class="job-listings-section">
+            <div class="container">
+                <h1>Unapproved Job Postings</h1>
+
+                <!-- Check if there are applications -->
+                {% if applications %}
+                    {% for application in applications %}
+                        <div class="job-card">
+                            <h3>{{ application.position }}</h3>
+                            <div class="job-meta">
+                                <span><i class="bi bi-building"></i> {{ application.company_name }}</span>
+                                <span><i class="bi bi-geo-alt"></i> {{ application.location }}</span>
+                                <span><i class="bi bi-clock"></i> {{ application.job_type }}</span>
+                                <span><i class="bi bi-cash"></i> {{ application.salary }}</span>
+                            </div>
+                            <div class="job-description">
+                                <p>{{ application.description }}</p>
+                            </div>
+                            <div class="job-actions">
+                                <a href="{{ url_for('approve_application', id=application.id) }}" class="btn btn-approve">Approve</a>
+                                <a href="{{ url_for('deny_application', id=application.id) }}" class="btn btn-deny">Deny</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No unapproved applications at the moment.</p>
+                {% endif %}
+            </div>
+        </section>
+    </div>
 {% endblock %}

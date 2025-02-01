@@ -99,32 +99,12 @@ def posts():
         all_posts = query.order_by(BlogPost.date_posted).all()
         print(all_posts)
 
-    return render_template('what.html', posts = all_posts)
-
-# @app.route('/posts/delete/<int:id>')
-# def delete(id):
-#     post = BlogPost.query.get_or_404(id)
-#     db.session.delete(post)
-#     db.session.commit()
-#     return redirect('/posts')
-
-# @app.route('/posts/edit/<int:id>', methods = ['POST'])
-# def edit(id):
-    
-#     post = BlogPost.query.get_or_404(id)
-#     if request.method == 'POST':
-#         post.title = request.form['title']
-#         post.content = request.form['content']
-#         post.author = request.form['author']
-#         db.session.commit()
-#         return redirect('/posts')
-#     else:
-#         return render_template('edit.html', post = post)
+    return render_template('job_posts.html', posts = all_posts)
 
 @app.route('/create_job_posting', methods=['GET', 'POST'])
-def apply():
+def create_job_posting():
     if "username" not in session:
-        flash("You must be logged in to apply!", "warning")
+        flash("You must be logged in to create a job posting!", "warning")
         return redirect('/')
 
     if request.method == 'POST':
@@ -160,8 +140,9 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user and user.check_password(password):
             session['username'] = username
-            return redirect(url_for('dashboard'))
-        else:
+            user_logged_in = True
+            return redirect('/')
+        else:           
             flash("Invalid username or password.")
             return render_template('login.html', error = 'Invalid username or password.')
     return render_template('login.html')
@@ -173,7 +154,7 @@ def register():
         password = request.form["password"]
         user = User.query.filter_by(username=username).first()
         if user:
-            return render_template("index.html", error = "User already here!")
+            return render_template("landingpage.html", error = "User already here!")
         else:
             is_admin = User.query.count() == 0
             new_user = User(username = username, is_admin = is_admin)
@@ -181,16 +162,9 @@ def register():
             db.session.add(new_user)
             db.session.commit()
             session['username'] = username
-            return redirect(url_for('dashboard'))
+            user_logged_in = True
+            return redirect("/")
     return render_template('register.html')
-
-@app.route("/dashboard")
-def dashboard():
-    if "username" in session:
-        # Fetch the user based on the session username
-        user = User.query.filter_by(username=session['username']).first()
-        return render_template("homepage.html", username=session['username'], user=user)  # Pass the 'user' object
-    return redirect(url_for('index'))
 
 @app.route("/")
 def homepage():
@@ -199,7 +173,8 @@ def homepage():
 @app.route("/logout")
 def logout():
     session.pop('username', None)
-    return redirect(url_for('index'))
+    user_logged_in = False
+    return redirect("/") # REDIRECT TO LANDING PAGE
 
 @app.route('/admin')
 def admin(): 
@@ -212,7 +187,7 @@ def admin():
             return redirect(url_for('dashboard'))
     else:
         flash("You must be logged in to access this page.")
-        return redirect(url_for('index'))
+        return redirect(url_for('index')) # REDIRECT TO ADMIN 
     
  #Applications Route   
 @app.route('/admin/applications')
@@ -262,7 +237,13 @@ def deny_application(id):
     db.session.commit()
     return redirect('/admin/applications')
 
+@app.context_processor
+def inject_user_logged_in():
+    return dict(user_logged_in="username" in session)
 
+@app.route("/apply")
+def apply():
+    return render_template("apply.html")
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
