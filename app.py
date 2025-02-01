@@ -11,7 +11,7 @@ app.secret_key = "RNX73oMEeL5ShKoaHiiZkw"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
 
 app.config['SQLALCHEMY_BINDS'] = {
-
+                                                                                                                                                                                                                                                                                                                                                    
     'users': 'sqlite:///users.db',
     'applications': 'sqlite:///applications.db'
 
@@ -46,8 +46,10 @@ class BlogPost(db.Model):
     applicant_name = db.Column(db.String(100), nullable=True)
     position = db.Column(db.String(100), nullable=True)
     cover_letter = db.Column(db.Text, nullable=True)
-    salary = db.Column(db.Float, nullable = True)
-
+    salary = db.Column(db.Integer, nullable=True)
+    jobType = db.Column(db.String, nullable=True)  # Correct column name
+    experienceLevel = db.Column(db.String, nullable=True)  # Correct column name
+    remoteOnly = db.Column(db.String, nullable=True)  # Correct column name
 
     def __repr__(self):
         return f'Blog post {self.id}'
@@ -62,7 +64,10 @@ class JobApplication(db.Model):
     approved = db.Column(db.Boolean, nullable=False, default=False)
     denied = db.Column(db.Boolean, nullable=False, default=False)
     username_author = db.Column(db.String(100), nullable=False)
-    salary = db.Column(db.Float, nullable=True)
+    salary = db.Column(db.Integer, nullable=True)
+    jobType = db.Column(db.String, nullable = True)
+    experienceLevel = db.Column(db.String, nullable = True)
+    remoteOnly = db.Column(db.String, nullable = True)
     def __repr__(self):
         return f'JobApplication({self.applicant_name}, {self.position}, {self.cover_letter})'
     
@@ -75,31 +80,48 @@ def index():
 
 @app.route('/posts', methods=['GET', 'POST'])
 def posts():
-
-    salary_min = request.args.get('salary_min', type = float)
-    salary_max = request.args.get('salary_max', type = float)
+    salary_min = None
+    salary_max = None
+    salary_range = request.args.get('salary_range')
+    job_type = request.args.get('job_type')
+    experience_level = request.args.get('experience_level')
+    remote_only = request.args.get('remote_only')
+    if salary_range:
+        if salary_range == "0-50000":
+            salary_min, salary_max = 0, 50000
+        elif salary_range == "50000-100000":
+            salary_min, salary_max = 50000, 100000
+        elif salary_range == "100000+":
+            salary_min, salary_max = 100000, None
 
     if request.method == 'POST':
         post_title = request.form['applicant_name']
         post_content = request.form['cover_letter']
         post_author = request.form['position']
-        post_salary = request.form['salary']
-        new_post = BlogPost(title=post_title, content = post_content, author = post_author, salary = post_salary)
+        post_salary = int(request.form['salary'])  # Convert to integer
+        post_type = request.form['jobType']
+        post_experience = request.form['experienceLevel']
+        post_remote = request.form['remoteOnly']
+        new_post = BlogPost(title=post_title, content=post_content,author=post_author,salary=post_salary,jobType=post_type,experienceLevel=post_experience,remoteOnly=post_remote)
         db.session.add(new_post)
         db.session.commit()
+
         return redirect('/posts')
-    else:
-        query = BlogPost.query
-        
-        if salary_min is not None:
-            query = query.filter(BlogPost.salary >= salary_min)
-        if salary_max is not None:
-            query = query.filter(BlogPost.salary <= salary_max)
+    query = BlogPost.query
+    
+    if salary_min is not None:
+        query = query.filter(BlogPost.salary >= salary_min)
+    if salary_max is not None:
+        query = query.filter(BlogPost.salary <= salary_max)
+    if job_type:
+        query = query.filter(BlogPost.jobType == job_type)
+    if experience_level:
+        query = query.filter(BlogPost.experienceLevel == experience_level)
+    if remote_only:
+        query = query.filter(BlogPost.remoteOnly == remote_only)
+    all_posts = query.order_by(BlogPost.date_posted).all()
 
-        all_posts = query.order_by(BlogPost.date_posted).all()
-        print(all_posts)
-
-    return render_template('job_posts.html', posts = all_posts)
+    return render_template('job_posts.html', posts=all_posts)
 
 @app.route('/create_job_posting', methods=['GET', 'POST'])
 def create_job_posting():
@@ -112,23 +134,33 @@ def create_job_posting():
         username_author = session['username']
         applicant_name = request.form['applicant_name']
         position = request.form['position']
-        salary = request.form['salary']
+        salary = int(request.form['salary'])  # Convert to integer
         cover_letter = request.form.get('cover_letter', '')  # Optional field
+        jobType = request.form['jobType']
+        experienceLevel = request.form['experienceLevel']
+        remoteOnly = request.form['remoteOnly']
 
         new_application = JobApplication(
-            username_author = username_author,
+            username_author=username_author,
             applicant_name=applicant_name,
             position=position,
             cover_letter=cover_letter,
-            salary=salary
+            salary=salary,
+            jobType=jobType,
+            experienceLevel=experienceLevel,
+            remoteOnly=remoteOnly
         )
         db.session.add(new_application)
         db.session.commit()
     
         flash('Your application has been submitted successfully!', 'success')
-        return redirect('/create_job_posting')  # Redirect back to the apply page or a confirmation page
+        return redirect('/create_job_posting')
 
-    return render_template('add-listing.html')  # Render the application form page on GET request
+    # Fetch posts created by the current user
+    username = session.get('username')
+    user_posts = BlogPost.query.filter_by(author=username).order_by(BlogPost.date_posted).all()
+
+    return render_template('add-listing.html', posts=user_posts)
 
 #Login
 @app.route("/login", methods = ['GET', 'POST'])
@@ -200,10 +232,10 @@ def admin_applications():
             return render_template('admin_applications.html', applications=unapproved_applications)
         else:
             flash("You must be admin to access this page.")
-            return redirect(url_for('dashboard'))
+            return redirect('/')
     else:
         flash("You must be logged in to access this page.")
-        return redirect(url_for('index'))
+        return redirect('/')
 
 #Approve Route
 @app.route('/admin/applications/approve/<int:id>')
@@ -216,13 +248,18 @@ def approve_application(id):
 
     # Create a new BlogPost entry based on the approved application
     new_post = BlogPost(
+        id = application.id,
         title=application.applicant_name,
         content=application.cover_letter,
         author= application.username_author,
         applicant_name=application.applicant_name,
         position=application.position,
         cover_letter=application.cover_letter,
-        salary=application.salary
+        salary=application.salary,
+        jobType=application.jobType,
+        experienceLevel=application.experienceLevel,
+        remoteOnly=application.remoteOnly
+
     )
     db.session.add(new_post)
     db.session.commit()
@@ -241,9 +278,59 @@ def deny_application(id):
 def inject_user_logged_in():
     return dict(user_logged_in="username" in session)
 
-@app.route("/apply")
-def apply():
-    return render_template("apply.html")
+@app.route("/apply/<int:job_id>")
+def apply(job_id):
+    # Fetch the job post from the database using the job_id
+
+    if "username" not in session:
+        return redirect(url_for('login'))
+    
+    job_post = BlogPost.query.get_or_404(job_id)
+    logged_in_user = session["username"]
+
+    if request.method == "POST":
+        
+        applicant_name = request.form["applicant_name"]
+        cover_letter = request.form["cover_letter"]
+
+        new_application = JobApplication(
+
+            applicant_name = applicant_name,
+            position = job_post.position,
+            cover_letter = cover_letter,
+            username_author = logged_in_user,
+            salary = job_post.salary,
+            jobType = job_post.jobType,
+            experienceLevel = job_post.experienceLevel,
+            remoteOnly = job_post.remoteOnly
+
+        )
+    
+        db.session.add(new_application)
+        db.session.commit()
+        print("Application created")
+        return redirect(url_for("posts"))
+
+
+    return render_template("apply.html", job_post=job_post)
+
+@app.route("/applications/<int:job_id>")
+def viewApplication(job_id):
+    job_post = BlogPost.query.get_or_404(job_id)
+    applications = JobApplication.query.filter_by(position = job_post.position).all()
+
+    return render_template("applications.html", job_post = job_post)
+
+
+#Deletes the posts
+@app.route('/posts/delete/<int:id>', methods=['POST'])
+def delete(id):
+    post = BlogPost.query.get_or_404(id)
+    db.session.delete(post)
+    db.session.commit()
+    flash("Post deleted!")
+    return redirect('/create_job_posting')
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()

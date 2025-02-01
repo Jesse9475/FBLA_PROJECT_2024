@@ -3,6 +3,30 @@
 {% block head %}
     <title>Unapproved Job Postings - Ascend</title>
     <style>
+        :root {
+            --bg-light: #ffffff;
+            --text-light: #000000;
+            --border-light: #e0e0e0;
+            --card-light: #f8f9fa;
+            
+            --bg-dark: #121212;
+            --text-dark: #ffffff;
+            --border-dark: #444;
+            --card-dark: #1e1e1e;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: var(--bg-dark);
+                color: var(--text-dark);
+            }
+        }
+
         /* Job Listings Section */
         .job-listings-section {
             padding: 60px 0;
@@ -15,104 +39,123 @@
             text-align: center;
         }
 
-        .job-listings-section .job-card {
-            background-color: #ffffff;
-            border: 1px solid #e0e0e0;
+        .job-card {
+            background-color: var(--card-light);
+            border: 1px solid var(--border-light);
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 20px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .job-listings-section .job-card:hover {
+        @media (prefers-color-scheme: dark) {
+            .job-card {
+                background-color: var(--card-dark);
+                border: 1px solid var(--border-dark);
+            }
+        }
+
+        .job-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
-        .job-listings-section .job-card h3 {
+        .job-card h3 {
             font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 10px;
         }
 
-        .job-listings-section .job-card .job-meta {
+        .job-meta, .job-extra {
             color: #6e6e73;
             font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            .job-meta, .job-extra {
+                color: #b0b0b0;
+            }
+        }
+
+        .job-meta span, .job-extra span {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .job-description {
+            font-size: 1rem;
+            line-height: 1.6;
             margin-bottom: 15px;
         }
 
-        .job-listings-section .job-card .job-meta span {
-            margin-right: 10px;
+        .job-actions {
+            display: flex;
+            gap: 10px;
         }
 
-        .job-listings-section .job-card .job-description {
-            font-size: 1rem;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .job-listings-section .job-card .btn-apply {
+        .btn-apply {
             background-color: #007aff;
             color: #ffffff;
             font-size: 1rem;
             padding: 8px 20px;
             border-radius: 30px;
+            text-decoration: none;
             transition: background-color 0.3s ease;
         }
 
-        .job-listings-section .job-card .btn-apply:hover {
+        .btn-apply:hover {
             background-color: #005bb5;
         }
 
-        .job-listings-section .btn-approve {
+        .btn-approve {
             background-color: #28a745;
             color: #ffffff;
             font-size: 1rem;
             padding: 8px 20px;
             border-radius: 30px;
+            text-decoration: none;
             transition: background-color 0.3s ease;
         }
 
-        .job-listings-section .btn-approve:hover {
+        .btn-approve:hover {
             background-color: #218838;
         }
 
-        .job-listings-section .btn-deny {
+        .btn-deny {
             background-color: #dc3545;
             color: #ffffff;
             font-size: 1rem;
             padding: 8px 20px;
             border-radius: 30px;
+            text-decoration: none;
             transition: background-color 0.3s ease;
         }
 
-        .job-listings-section .btn-deny:hover {
+        .btn-deny:hover {
             background-color: #c82333;
         }
     </style>
 {% endblock %}
 
 {% block body %}
-    <!-- Main Content -->
     <div class="container mt-5 pt-5">
-        <!-- Job Listings Section -->
         <section class="job-listings-section">
             <div class="container">
                 <h1>Unapproved Job Postings</h1>
 
-                <!-- Check if there are applications -->
                 {% if applications %}
                     {% for application in applications %}
                         <div class="job-card">
                             <h3>{{ application.position }}</h3>
                             <div class="job-meta">
-                                <span><i class="bi bi-building"></i> {{ application.company_name }}</span>
-                                <span><i class="bi bi-geo-alt"></i> {{ application.location }}</span>
-                                <span><i class="bi bi-clock"></i> {{ application.job_type }}</span>
+                                
+                                <b><small>Written by {{application.username_author}} on {{application.date_applied}}</small></b>
+                                <span><i class="bi bi-clock"></i> {{ application.jobType }}</span>
                                 <span><i class="bi bi-cash"></i> {{ application.salary }}</span>
                             </div>
                             <div class="job-description">
-                                <p>{{ application.description }}</p>
+                                <p>{{ application.cover_letter }}</p>
                             </div>
                             <div class="job-actions">
                                 <a href="{{ url_for('approve_application', id=application.id) }}" class="btn btn-approve">Approve</a>

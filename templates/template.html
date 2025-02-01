@@ -68,6 +68,11 @@
             color: #ffffff;
         }
 
+        /* Dark Mode Styles for ASCEND text */
+        .dark-mode .ascend-text {
+            color: #ffffff !important; /* Change to white or any other color you prefer */
+        }
+
         /* Header */
         .navbar-custom {
             background-color: #ffffff; /* Solid white background */
@@ -238,48 +243,48 @@
             <div class="d-flex flex-wrap align-items-center justify-content-between">
                 <a href="/" class="d-flex align-items-center text-decoration-none">
                     <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
-                    <span class="fs-5 fw-semibold" style="color: #000000;">ASCEND</span>
+                    <span class="fs-5 fw-semibold ascend-text" style="color: #000000;">ASCEND</span>
                 </a>
 
                 <ul class="nav col-12 col-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="#" class="nav-link">Home</a></li>
                     <li><a href="#" class="nav-link">Features</a></li>
                     <li><a href="#" class="nav-link">Pricing</a></li>
-                    <li><a href="faqS" class="nav-link">FAQs</a></li>
+                    <li><a href="#" class="nav-link">FAQs</a></li>
                     <li><a href="#" class="nav-link">About</a></li>
                 </ul>
                 <div class="text-end">
                     {% if user_logged_in %}
-                        <!-- Profile Icon with Dropdown -->
-                        <div class="profile-icon">
-                            <i class="bi bi-person"></i> <!-- Bootstrap Icons -->
-                            <!-- Dropdown Menu -->
-                            <div class="profile-dropdown">
-                                <a href="#">
-                                    Settings <i class="bi bi-gear"></i>
-                                </a>
-                                <a href="#">
-                                    Accessibility <i class="bi bi-universal-access"></i>
-                                </a>
-                                <a href="#" class="display-switch">
-                                    Dark Mode
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="displaySwitch">
-                                    </div>
-                                </a>
-                                <a href="/logout">
-                                    Logout <i class="bi bi-box-arrow-right"></i>
-                                </a>
-                            </div>
+                    <!-- Profile Icon with Dropdown -->
+                    <div class="profile-icon">
+                        <i class="bi bi-person"></i> <!-- Bootstrap Icons -->
+                        <!-- Dropdown Menu -->
+                        <div class="profile-dropdown">
+                            <a href="/admin/applications">
+                                Admin Panel <i class="bi bi-gear"></i>
+                            </a>
+                            <a href="#">
+                                Accessibility <i class="bi bi-universal-access"></i>
+                            </a>
+                            <a href="#" class="display-switch">
+                                Dark Mode
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="displaySwitch">
+                                </div>
+                            </a>
+                            <a href="/logout">
+                                Logout <i class="bi bi-box-arrow-right"></i>
+                            </a>
                         </div>
-                    {% else %}
-                        <!-- Login Button (Visible Before Login) -->
-                        <a href="/login" class="btn btn-outline-light me-2">Login</a>
-                    {% endif %}
-                </div>
+                    </div>
+                {% else %}
+                    <!-- Login Button (Visible Before Login) -->
+                    <a href="/login" class="btn btn-outline-light me-2">Login</a>
+                {% endif %}
             </div>
         </div>
-    </header>
+    </div>
+</header>
 
     <!-- Main Content -->
     <div class="container mt-5 pt-5">

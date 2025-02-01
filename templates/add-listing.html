@@ -6,7 +6,12 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Add only component-specific styles here */
+    /* General Styles */
+    .dark-mode .listings-dashboard {
+      background-color: #1f2a48; /* Dark blue background for dark mode */
+      color: #ffffff;
+    }
+
     .listings-dashboard {
       flex: 1;
       background-color: white;
@@ -17,7 +22,7 @@
     }
 
     .dark-mode .listings-dashboard {
-      background-color: #1f2a48; /* Dark blue background for dark mode */
+      background-color: #1f2a48;
       color: #ffffff;
     }
 
@@ -32,7 +37,7 @@
     }
 
     .dark-mode .listing {
-      background-color: #0a192f; /* Dark blue background for dark mode */
+      background-color: #0a192f;
       border-color: #333;
       color: #ffffff;
     }
@@ -43,10 +48,11 @@
     }
 
     .dark-mode .listing:hover {
-      border-color: #64b5f6; /* Light blue border for dark mode */
+      border-color: #64b5f6;
       box-shadow: 0 4px 8px rgba(100, 181, 246, 0.1);
     }
 
+    /* Floating Action Button (FAB) */
     .fab {
       position: fixed;
       bottom: 2rem;
@@ -67,16 +73,30 @@
     }
 
     .dark-mode .fab {
-      background-color: #64b5f6; /* Light blue for dark mode */
+      background-color: #64b5f6;
     }
 
     .fab:hover {
-      background-color: #005bb5;
-      transform: scale(1.1);
+      background-color: #0056b3;
+      transform: translateY(-2px);
     }
 
-    .dark-mode .fab:hover {
-      background-color: #42a5f5; /* Slightly lighter blue for dark mode */
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal.open {
+      display: flex;
     }
 
     .modal-content {
@@ -85,90 +105,134 @@
       padding: 2rem;
       width: 90%;
       max-width: 500px;
+      max-height: 80vh; /* Limit height and make scrollable */
+      overflow-y: auto; /* Make modal scrollable */
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
       animation: slideIn 0.3s ease;
     }
 
     .dark-mode .modal-content {
-      background-color: #1f2a48; /* Dark blue background for dark mode */
-      color: #ffffff;
-    }
-
-    .toast {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      background-color: #333;
-      color: white;
-      padding: 1rem;
-      border-radius: 5px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      animation: slideIn 0.3s ease;
-      z-index: 1000;
-    }
-
-    .dark-mode .toast {
-      background-color: #1f2a48; /* Dark blue background for dark mode */
+      background-color: #1f2a48;
       color: #ffffff;
     }
 
     @keyframes slideIn {
-      from { transform: translateY(-20px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
 
-    /* Form Styles */
-    .form-control {
-      background-color: white;
-      color: #1d1d1f;
-      border: 1px solid #e0e0e0;
+    .modal-content h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: #333;
     }
 
-    .dark-mode .form-control {
-      background-color: #0a192f; /* Dark blue background for dark mode */
+    .dark-mode .modal-content h3 {
+      color: #ffffff;
+    }
+
+    .modal-content input,
+    .modal-content textarea,
+    .modal-content select {
+      width: 100%;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .dark-mode .modal-content input,
+    .dark-mode .modal-content textarea,
+    .dark-mode .modal-content select {
+      background-color: #0a192f;
       color: #ffffff;
       border-color: #333;
     }
 
-    .form-control:focus {
+    .modal-content input:focus,
+    .modal-content textarea:focus,
+    .modal-content select:focus {
       border-color: #007bff;
-      box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+      outline: none;
     }
 
-    .dark-mode .form-control:focus {
-      border-color: #64b5f6; /* Light blue border for dark mode */
-      box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.1);
+    .dark-mode .modal-content input:focus,
+    .dark-mode .modal-content textarea:focus,
+    .dark-mode .modal-content select:focus {
+      border-color: #64b5f6;
     }
 
-    .btn-success {
+    /* Dropdown Styling */
+    .modal-content select {
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007bff%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      background-size: 12px;
+    }
+
+    .dark-mode .modal-content select {
+      background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2364b5f6%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+    }
+
+    /* Submit Button */
+    .modal-content .btn-success {
+      background-color: #6c757d;
+      border: none;
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .modal-content .btn-success.valid {
       background-color: #28a745;
-      border-color: #28a745;
     }
 
-    .dark-mode .btn-success {
-      background-color: #218838; /* Slightly darker green for dark mode */
-      border-color: #218838;
+    .dark-mode .modal-content .btn-success {
+      background-color: #6c757d;
     }
 
-    .btn-success:hover {
+    .dark-mode .modal-content .btn-success.valid {
       background-color: #218838;
-      border-color: #1e7e34;
-    }
-
-    .dark-mode .btn-success:hover {
-      background-color: #1e7e34; /* Even darker green for dark mode */
-      border-color: #1e7e34;
     }
   </style>
 {% endblock %}
 
 {% block body %}
   <!-- Main Content -->
-  <div class="listings-dashboard">
-    <h2>Your Listings</h2>
-    <div id="listings-container">
-      <!-- Existing listings will be displayed here -->
+  <div class="container">
+    <div class="listings-dashboard">
+      <h2>Your Listings</h2>
+      <div id="listings-container">
+        <!-- Existing listings will be displayed here -->
+      </div>
     </div>
+  </div>
+
+  <div>
+        {% for post in posts %}
+        <div class="listing">
+            <h3>{{ post.title }}</h3>
+            <p>{{ post.author }} | {{ post.remoteOnly }} | {{ post.jobType }} | ${{ post.salary }}</p>
+            <p>{{ post.content }}</p>
+            <form action="{{ url_for('delete', id=post.id) }}" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-apply" style="background-color: red; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; font-weight: bold; display: inline-block; border: none; cursor: pointer;">Delete</button>
+            </form>
+        </div>
+        {% endfor %}
+
   </div>
 
   <!-- Floating Action Button -->
@@ -181,33 +245,47 @@
     <div class="modal-content">
       <h3>Add New Job Listing</h3>
       <form action='/create_job_posting' method='POST'>
-        <div class="mb-3">
-          <label for="applicant_name" class="form-label">Company Name:</label>
-          <input class="form-control" type="text" name="applicant_name" id="applicant_name" 
-                 placeholder="Enter Your Company Name" required>
-        </div>
+        <label for="applicant_name">Company Name:</label>
+        <input class="form-control" type="text" name="applicant_name" id="applicant_name" placeholder="Enter Your Company Name" required>
+        <br>
 
-        <div class="mb-3">
-          <label for="position" class="form-label">Position Name:</label>
-          <input class="form-control" type="text" name="position" id="position" 
-                 placeholder="Enter Position Name" required>
-        </div>
+        <label for="position">Position Name:</label>
+        <input class="form-control" type="text" name="position" id="position" placeholder="Enter Position Name" required>
+        <br>
 
-        <div class="mb-3">
-          <label for="salary" class="form-label">Starting Salary:</label>
-          <input class="form-control" type="text" name="salary" id="salary" 
-                 placeholder="Enter Starting Salary" required>
-        </div>
+        <label for="jobType">Job Type:</label>
+        <select id="job-type" name="jobType" required>
+          <option value="Full-Time">Full-Time</option>
+          <option value="Part-Time">Part-Time</option>
+          <option value="Internship">Internship</option>
+        </select>
+        <br>
 
-        <div class="mb-3">
-          <label for="cover_letter" class="form-label">Other Information:</label>
-          <textarea class="form-control" id="cover_letter" rows="3" name="cover_letter" 
-                    placeholder="Enter Other Information Here"></textarea>
-        </div>
+        <label for="salary">Starting Salary:</label>
+        <input class="form-control" type="text" name="salary" id="salary" placeholder="Enter Starting Salary" required>
+        <br>
 
-        <div class="d-grid gap-2">
-          <input type="submit" class="btn btn-success" value="Submit Posting Request">
-        </div>
+        <label for="experienceLevel">Experience Level:</label>
+        <select id="experience-level" name="experienceLevel" required>
+          <option value="Entry">Entry</option>
+          <option value="Mid">Mid</option>
+          <option value="Senior">Senior</option>
+        </select>
+        <br>
+
+        <label for="cover_letter">Other Information:</label>
+        <textarea class="form-control" id="cover_letter" rows="5" name="cover_letter" placeholder="Enter Other Information Here"></textarea>
+        <br>
+
+        <label for="remoteOnly">Remote Only?</label>
+        <select id="remote-only" name="remoteOnly" required>
+          <option value="In-person">In-person</option>
+          <option value="Remote">Remote</option>
+          <option value="Hybrid">Hybrid</option>
+        </select>
+        <br>
+
+        <input type="submit" class="btn btn-success" id="submitButton" value="Submit Posting Request">
       </form>
     </div>
   </div>
@@ -235,6 +313,24 @@
         toast.style.display = 'none';
       }, 3000);
     }
+
+    // Validate Form and Change Button Color
+    const form = document.querySelector('form');
+    const submitButton = document.getElementById('submitButton');
+
+    form.addEventListener('input', () => {
+      const inputs = form.querySelectorAll('input, select, textarea');
+      let allFilled = true;
+      inputs.forEach(input => {
+        if (!input.value) allFilled = false;
+      });
+
+      if (allFilled) {
+        submitButton.classList.add('valid');
+      } else {
+        submitButton.classList.remove('valid');
+      }
+    });
 
     // Save Listing
     function saveListing() {

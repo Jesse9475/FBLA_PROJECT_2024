@@ -1,182 +1,133 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "template.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apply for Job - Ascend</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <style>
-        /* Global Styles */
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #ffffff;
-            color: #1d1d1f;
-            line-height: 1.6;
-        }
+{% block head %}
+<title>Apply for Job - Ascend</title>
+<style>
+    /* Job Details Section */
+    .job-details-section {
+        padding: 60px 0;
+        color: white;
+    }
 
-        /* Job Details Section */
-        .job-details-section {
-            padding: 60px 0;
-        }
+    .job-details-section h1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
 
-        .job-details-section h1 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
+    .job-details-section .job-meta {
+        font-size: 1rem;
+        margin-bottom: 30px;
+    }
 
-        .job-details-section .job-meta {
-            color: #6e6e73;
-            font-size: 1rem;
-            margin-bottom: 30px;
-        }
+    .job-description {
+        color: white;
+    }
 
-        .job-details-section .job-meta span {
-            margin-right: 15px;
-        }
+    .btn-apply {
+        background-color: #007aff; /* Solid Blue */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+    }
 
-        .job-details-section .job-description {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            margin-bottom: 40px;
-        }
+    /* Application Form Section (Modal) */
+    .modal-content {
+        background-color: #0a2540;
+        color: white;
+    }
 
-        .job-details-section .btn-apply {
-            background-color: #007aff;
-            color: #ffffff;
-            font-size: 1.1rem;
-            padding: 12px 30px;
-            border-radius: 30px;
-            transition: background-color 0.3s ease;
-        }
+    .modal-body {
+        background-color: #0a2540; /* Dark Blue for Form Only */
+    }
 
-        .job-details-section .btn-apply:hover {
-            background-color: #005bb5;
-        }
+    .form-control {
+        background-color: #1e3a5f;
+        color: white;
+        border: 1px solid white;
+    }
 
-        /* Application Form Section */
-        .application-form-section {
-            padding: 60px 0;
-            background-color: #f8f9fa;
-        }
+    .btn-submit {
+        background-color: #007aff;
+        color: white;
+        font-size: 1.1rem;
+        padding: 12px 30px;
+        border-radius: 30px;
+    }
+</style>
+{% endblock %}
 
-        .application-form-section h2 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 30px;
-        }
-
-        .application-form-section .form-label {
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .application-form-section .form-control {
-            border-radius: 8px;
-            padding: 10px 15px;
-            font-size: 1rem;
-            margin-bottom: 20px;
-        }
-
-        .application-form-section .form-control:focus {
-            border-color: #007aff;
-            box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
-        }
-
-        .application-form-section .btn-submit {
-            background-color: #007aff;
-            color: #ffffff;
-            font-size: 1.1rem;
-            padding: 12px 30px;
-            border-radius: 30px;
-            transition: background-color 0.3s ease;
-        }
-
-        .application-form-section .btn-submit:hover {
-            background-color: #005bb5;
-        }
-    </style>
-</head>
-
-<body>
-
-    <!-- Job Details Section -->
-    <section class="job-details-section">
-        <div class="container">
-            <h1>Software Engineering Intern</h1>
-            <div class="job-meta">
-                <span><i class="bi bi-building"></i> TechCorp</span>
-                <span><i class="bi bi-geo-alt"></i> Remote</span>
-                <span><i class="bi bi-clock"></i> Full-Time</span>
-                <span><i class="bi bi-cash"></i> $20 - $25/hour</span>
-            </div>
-            <div class="job-description">
-                <p>
-                    TechCorp is looking for a motivated Software Engineering Intern to join our team. You will work on
-                    cutting-edge projects, collaborate with experienced engineers, and gain hands-on experience in
-                    software development.
-                </p>
-                <h3>Responsibilities:</h3>
-                <ul>
-                    <li>Develop and maintain web applications using modern technologies.</li>
-                    <li>Collaborate with cross-functional teams to design and implement new features.</li>
-                    <li>Write clean, maintainable, and efficient code.</li>
-                    <li>Participate in code reviews and team meetings.</li>
-                </ul>
-                <h3>Requirements:</h3>
-                <ul>
-                    <li>Currently pursuing a degree in Computer Science or a related field.</li>
-                    <li>Experience with JavaScript, Python, or Java.</li>
-                    <li>Strong problem-solving skills and attention to detail.</li>
-                    <li>Ability to work independently and in a team environment.</li>
-                </ul>
-            </div>
-            <button class="btn btn-apply" data-bs-toggle="modal" data-bs-target="#applicationModal">Apply Now</button>
+{% block body %}
+<section class="job-details-section">
+    <div class="container">
+        <h1>{{ job_post.title }}</h1>
+        <div class="job-meta">
+            <span><i class="bi bi-building"></i> {{ job_post.username_author }}</span>
+            <span>{{ job_post.experienceLevel }}</span>
+            <span><i class="bi bi-geo-alt"></i> {{ job_post.remoteOnly }}</span>
+            <span><i class="bi bi-clock"></i> {{ job_post.jobType }}</span>
+            <span><i class="bi bi-cash"></i> ${{ job_post.salary }}/year</span>
         </div>
-    </section>
+        <div class="job-description">
+            <p>{{ job_post.content }}</p>
+        </div>
+        <button class="btn btn-apply" data-bs-toggle="modal" data-bs-target="#applicationModal">Apply Now</button>
+    </div>
+</section>
 
-    <!-- Application Form Section (Modal) -->
-    <div class="modal fade" id="applicationModal" tabindex="-1" aria-labelledby="applicationModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2 class="modal-title fs-5" id="applicationModalLabel">Apply for Software Engineering Intern</h2>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="fullName" class="form-label">Full Name</label>
-                            <input type="text" class="form-control" id="fullName" placeholder="Enter your full name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email Address</label>
-                            <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Phone Number</label>
-                            <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="resume" class="form-label">Upload Resume</label>
-                            <input type="file" class="form-control" id="resume" accept=".pdf,.doc,.docx" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="coverLetter" class="form-label">Cover Letter</label>
-                            <textarea class="form-control" id="coverLetter" rows="5" placeholder="Write your cover letter here..." required></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-submit w-100">Submit Application</button>
-                    </form>
-                </div>
+<div class="modal fade" id="applicationModal" tabindex="-1" aria-labelledby="applicationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5" id="applicationModalLabel">Apply for {{ job_post.title }}</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="applicationForm" action="{{ url_for('apply', job_id=job_post.id) }}" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="applicant_name" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="applicant_name" name="applicant_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="location" class="form-label">Current Location</label>
+                        <input type="text" class="form-control" id="location" name="location" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="why_job" class="form-label">Why You Want This Job</label>
+                        <textarea class="form-control" id="why_job" name="why_job" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="question1" class="form-label">Question 1</label>
+                        <textarea class="form-control" id="question1" name="question1" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="question2" class="form-label">Question 2</label>
+                        <textarea class="form-control" id="question2" name="question2" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="resume" class="form-label">Upload Resume</label>
+                        <input type="file" class="form-control" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cover_letter" class="form-label">Upload Cover Letter</label>
+                        <input type="file" class="form-control" id="cover_letter" name="cover_letter" accept=".pdf,.doc,.docx" required>
+                    </div>
+                    <button type="submit" class="btn btn-submit">Submit Application</button>
+                </form>
+                <div id="successMessage" class="alert alert-success mt-3" style="display:none;">Application successfully submitted!</div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
-</body>
-
-</html>
+<script>
+    document.getElementById('applicationForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        this.style.display = 'none';
+        document.getElementById('successMessage').style.display = 'block';
+    });
+</script>
+{% endblock %}
